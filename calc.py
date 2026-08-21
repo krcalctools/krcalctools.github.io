@@ -6,7 +6,9 @@
 - 국민연금 상한액: 국민연금공단 고시
 - 건강보험료율: 국민건강보험공단 고시
 - 소득세: 국세청 근로소득 간이세액표 (여기서는 연간 산출식 기반 근사치 사용,
-  1인 가구/기본공제만 반영한 단순화 모델이라 실제 원천징수와 오차가 있을 수 있음)
+  1인 가구 기준으로 기본공제·연금보험료공제·특별소득공제(건강보험료)만 반영한
+  단순화 모델. 부양가족, 카드사용액 등 그 외 소득/세액공제는 미반영이라
+  실제 원천징수와는 여전히 오차가 있을 수 있음)
 """
 
 # ---- 4대보험 요율 (2025년 예시값, 매년 갱신 필요) ----
@@ -81,10 +83,19 @@ def calculate(gross_annual: int) -> dict:
     longterm_care = round(health * LONGTERM_CARE_RATE_OF_HEALTH)
     employment = round(gross_monthly * EMPLOYMENT_RATE)
 
+    # 4대보험 연간 합계 (연금보험료공제 / 특별소득공제에 사용)
+    pension_annual = pension * 12
+    health_and_longterm_annual = (health + longterm_care) * 12
+
     # 소득세 (연간 기준 근사 계산 후 12개월 분할)
     deduction = earned_income_deduction(gross_annual)
     earned_income_amount = max(gross_annual - deduction, 0)
-    taxable_base = max(earned_income_amount - 1_500_000, 0)  # 기본공제(본인) 150만원만 반영
+
+    # 종합소득공제 = 기본공제(본인) + 연금보험료공제(국민연금 전액) + 특별소득공제(건강보험료 전액)
+    basic_deduction = 1_500_000
+    comprehensive_deduction = basic_deduction + pension_annual + health_and_longterm_annual
+    taxable_base = max(earned_income_amount - comprehensive_deduction, 0)
+
     calculated_tax = calc_tax_by_bracket(taxable_base)
     credit = earned_income_tax_credit(calculated_tax, gross_annual)
     final_tax_annual = max(calculated_tax - credit, 0)
@@ -107,6 +118,14 @@ def calculate(gross_annual: int) -> dict:
         "total_deduction": total_deduction,
         "net_monthly": net_monthly,
         "net_annual": net_monthly * 12,
+        # 계산 과정 설명용 중간값
+        "earned_income_deduction": round(deduction),
+        "earned_income_amount": round(earned_income_amount),
+        "comprehensive_deduction": round(comprehensive_deduction),
+        "taxable_base": round(taxable_base),
+        "calculated_tax_annual": round(calculated_tax),
+        "tax_credit_annual": round(credit),
+        "final_tax_annual": round(final_tax_annual),
     }
 
 

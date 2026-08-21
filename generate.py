@@ -57,6 +57,9 @@ def page_html(salary, prev_salary, next_salary):
   .nav {{ margin-top: 30px; font-size: 14px; }}
   .explain {{ margin-top: 28px; font-size: 14px; color: #444; }}
   .explain h2 {{ font-size: 15px; }}
+  .steps {{ margin: 12px 0 0; padding-left: 20px; }}
+  .steps li {{ margin-bottom: 8px; }}
+  .steps .num {{ color: #1958c9; font-weight: 600; }}
   .disclaimer {{ margin-top: 40px; font-size: 12px; color: #999; line-height: 1.6; }}
   .footer-nav {{ margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; }}
   .footer-nav a {{ color: #666; margin-right: 12px; }}
@@ -84,6 +87,26 @@ def page_html(salary, prev_salary, next_salary):
   <div class="nav">{nav_html}</div>
 
   <div class="explain">
+    <h2>연봉 {fmt(man)}만원의 실수령액 계산 과정</h2>
+    <ol class="steps">
+      <li>월 급여 = 연봉 {fmt(man)}만원 ÷ 12 = <span class="num">{fmt(r['gross_monthly'])}원</span></li>
+      <li>4대보험 공제(월) = 국민연금 {fmt(r['pension'])}원 + 건강보험 {fmt(r['health'])}원
+        + 장기요양보험 {fmt(r['longterm_care'])}원 + 고용보험 {fmt(r['employment'])}원
+        = <span class="num">{fmt(r['pension'] + r['health'] + r['longterm_care'] + r['employment'])}원</span></li>
+      <li>근로소득공제(연) = <span class="num">{fmt(r['earned_income_deduction'])}원</span>을 연봉에서 제외 →
+        근로소득금액 <span class="num">{fmt(r['earned_income_amount'])}원</span></li>
+      <li>종합소득공제(연) = 기본공제 150만원 + 국민연금 납부액(연) + 건강보험료 납부액(연)
+        = <span class="num">{fmt(r['comprehensive_deduction'])}원</span></li>
+      <li>과세표준 = 근로소득금액 − 종합소득공제 = <span class="num">{fmt(r['taxable_base'])}원</span></li>
+      <li>산출세액(연) = 과세표준에 누진세율 적용 = <span class="num">{fmt(r['calculated_tax_annual'])}원</span></li>
+      <li>근로소득세액공제(연) = <span class="num">{fmt(r['tax_credit_annual'])}원</span> 차감 →
+        결정세액(연) <span class="num">{fmt(r['final_tax_annual'])}원</span> → 월 소득세
+        <span class="num">{fmt(r['income_tax'])}원</span> (+지방소득세 {fmt(r['local_tax'])}원)</li>
+      <li>실수령액 = 월급여 − 4대보험 − 소득세 − 지방소득세 = <span class="num">{fmt(r['net_monthly'])}원</span></li>
+    </ol>
+  </div>
+
+  <div class="explain">
     <h2>공제 항목 설명</h2>
     <p>국민연금은 표준 소득월액의 4.5%를 근로자가 부담하며, 상한액과 하한액이 매년 조정됩니다.
     건강보험은 소득의 3.545%, 여기에 건강보험료의 12.95%가 장기요양보험료로 추가 부과됩니다.
@@ -93,9 +116,10 @@ def page_html(salary, prev_salary, next_salary):
   </div>
 
   <div class="disclaimer">
-    ※ 본 계산은 1인 가구, 기본공제만 적용한 단순화된 추정치입니다. 부양가족, 각종 세액공제,
-    비과세 수당 등에 따라 실제 금액과 차이가 있을 수 있습니다. 4대보험 요율은 2025년 예시 기준이며
-    매년 변경되므로 정확한 금액은 국세청 홈택스 원천징수세액 조회를 참고하세요.
+    ※ 본 계산은 1인 가구 기준으로 기본공제·연금보험료공제·건강보험료 특별소득공제를 반영한
+    추정치입니다. 부양가족 공제, 카드사용액 등 그 외 소득·세액공제, 비과세 수당 등은 반영하지
+    않아 실제 금액과 차이가 있을 수 있습니다. 4대보험 요율은 2025년 예시 기준이며 매년 변경되므로
+    정확한 금액은 국세청 홈택스 원천징수세액 조회를 참고하세요.
   </div>
 
   <div class="footer-nav">

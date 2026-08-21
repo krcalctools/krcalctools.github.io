@@ -4,7 +4,7 @@
 - `calc.py` — 4대보험/소득세 계산 로직 (요율은 2025년 예시값, 매년 갱신 필요)
 - `static_pages.py` — about/privacy/contact 페이지 (SITE_NAME, CONTACT_EMAIL 여기서 수정)
 - `generate.py` — 연봉 구간별 페이지 + index.html + sitemap.xml 대량 생성
-- `output/` — 생성된 정적 사이트 (이 폴더 전체를 배포하면 됨)
+- `docs/` — 생성된 정적 사이트 (GitHub Pages가 이 폴더를 그대로 서빙함)
 
 ## 로컬에서 다시 생성하기
 ```bash
@@ -19,18 +19,31 @@ python generate.py
 3. `calc.py`의 4대보험 요율/상한액을 최신 공식 고시 수치로 검증
 4. 도메인 구매 (가비아, 카페24, Namecheap 등 — 연 1~2만원대)
 
-## 배포 방법 (Vercel, 무료)
-Vercel 계정 생성과 로그인은 본인이 직접 해야 합니다 (브라우저 인증 필요).
+## 배포 방법 (GitHub Pages, 무료 · Node.js 불필요)
+GitHub 계정 생성/로그인, 저장소 생성은 본인이 직접 해야 합니다 (브라우저 인증 필요).
 
-1. https://vercel.com 가입 (GitHub 계정으로 가입 추천)
-2. 터미널에서:
+1. https://github.com/new 에서 새 저장소 생성 (Public, README 추가 안 함)
+2. 로컬에서 저장소 연결 후 push:
    ```bash
-   npm i -g vercel
-   cd output
-   vercel --prod
+   git remote add origin https://github.com/<내계정>/<저장소명>.git
+   git branch -M main
+   git push -u origin main
    ```
-   (Node.js 설치가 안 되어 있으면 https://nodejs.org 에서 먼저 설치)
-3. 배포 후 Vercel 대시보드에서 "Domains"에 구매한 도메인 연결
+3. 저장소 → Settings → Pages → **Source: Deploy from a branch**,
+   **Branch: main / docs** 선택 → Save
+4. 1~2분 후 `https://<내계정>.github.io/<저장소명>/` 로 접속 가능
+
+### 계정명 안 보이게 하려면 (커스텀 도메인 연결)
+1. 도메인 구매 (가비아/카페24/Namecheap 등)
+2. 저장소 → Settings → Pages → **Custom domain**에 구매한 도메인 입력
+   → `docs/CNAME` 파일이 자동 생성됨
+3. 도메인 등록업체 DNS 설정에서 A레코드를 GitHub Pages IP로 연결
+   (185.199.108.153 / .109.153 / .110.153 / .111.153) 또는 www는 CNAME으로
+   `<내계정>.github.io` 연결
+4. DNS 전파(최대 몇 시간) 후 Pages 설정에서 **Enforce HTTPS** 체크
+
+### 참고: Vercel을 쓰고 싶다면
+동일하게 무료지만 Node.js 설치가 필요합니다 (`npm i -g vercel` → `cd docs && vercel --prod`).
 
 ## 검색엔진 등록
 1. [Google Search Console](https://search.google.com/search-console) — 도메인 소유권 확인 후 `sitemap.xml` 제출

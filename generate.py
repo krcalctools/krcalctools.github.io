@@ -9,7 +9,7 @@ import os
 from calc import calculate
 from static_pages import about_html, privacy_html, contact_html, SITE_NAME
 
-OUTPUT_DIR = "output"
+OUTPUT_DIR = "docs"  # GitHub Pages가 /docs 폴더를 바로 서빙할 수 있어서 이 이름 사용
 BASE_URL = "https://example-salary-calc.com"  # 실배포 시 실제 도메인으로 교체
 
 START = 20_000_000

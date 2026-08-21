@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>SK하이닉스 성과급 계산기 - PS·PI 2026</title>
+<meta name="description" content="SK하이닉스 PS(초과이익분배금, 최근 2964%)와 PI(생산성격려금, 최근 150%) 기준 예상 성과급을 계산해보세요.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.6; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 16px; margin-top: 26px; }
+  .calc-box { background: #f7f7fb; border-radius: 12px; padding: 20px; margin: 20px 0; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; color: #555; margin-bottom: 4px; }
+  .field input { width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; }
+  .result { margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e2ea; }
+  .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
+  .result-row.total { font-weight: 700; font-size: 17px; color: #1958c9; border-top: 1px dashed #ccc; margin-top: 6px; padding-top: 10px; }
+  .pending { color: #b8860b; font-size: 12px; }
+  .source { font-size: 12px; color: #888; margin-top: 4px; }
+  .source a { color: #888; }
+  .disclaimer { margin-top: 30px; font-size: 12px; color: #999; line-height: 1.6; }
+  .footer-nav { margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; }
+  .footer-nav a { color: #666; margin-right: 12px; }
+  .division-list { margin: 16px 0; padding-left: 20px; font-size: 14px; }
+</style>
+</head>
+<body>
+  <h1>SK하이닉스 성과급 계산기</h1>
+  <p>PS(초과이익분배금)와 PI(생산성격려금)를 최근 확정된 지급률 기준으로 계산합니다.</p>
+
+  <div class="calc-box">
+    <div class="field">
+      <label for="annual">연봉 (세전, 만원)</label>
+      <input type="number" id="annual" placeholder="예: 10000" oninput="calc()">
+    </div>
+
+    <div class="result">
+      <div class="result-row"><span>PS (기준급 연봉÷20의 2964%)</span><span id="ps">-</span></div>
+      <div class="result-row"><span>PI 1회분 (월기본급의 150%, 연봉÷12로 추정)</span><span id="pi">-</span></div>
+      <div class="result-row"><span>PI는 상·하반기 각각 지급 (2회분 = 위 금액×2, 매 반기 재확정)</span><span></span></div>
+      <div class="result-row total"><span>PS + PI 1회분 합계 (세전)</span><span id="total">-</span></div>
+    </div>
+  </div>
+
+  <h2>계산 기준</h2>
+  <p>PS = (연봉 ÷ 20) × 2964%<br>PI = 월 기본급(≈연봉÷12) × 150%</p>
+  <p class="source">PS 지급률 출처: 2025년 실적 기준 (2026년 2월 지급 완료) — <a href="https://www.busan.com/view/busan/view.php?code=2026020417284483907" target="_blank" rel="noopener nofollow">기사 보기</a></p>
+  <p class="source">PI 지급률 출처: 최근 확정 회차(2025년 하반기분, 2026년 1월 지급) 기준. 실제 지급률은 영업이익률 구간에 따라 0~150% 사이에서 매 반기 결정됨 — <a href="https://www.hankyung.com/article/202407257752Y" target="_blank" rel="noopener nofollow">기사 보기</a></p>
+
+  <h2>PS·PI란?</h2>
+  <p><b>PS(초과이익분배금)</b>는 연간 영업이익의 일부를 재원으로 연 1회(2월) 지급되며, 상한이 폐지되어
+  실적이 좋을수록 지급률이 크게 오를 수 있습니다. <b>PI(생산성격려금)</b>는 영업이익률 구간(0~150%)에 따라
+  반기마다 지급되는 월 기본급 기준 인센티브입니다.</p>
+
+  <div class="disclaimer">
+    ※ 세전 금액이며, 실제로는 상여소득세가 별도로 공제됩니다. PS는 최근 합의로 현금 40%·자사주 60%로
+    지급 구조가 바뀌는 중이라 실수령 현금은 표시 금액보다 적을 수 있습니다. PI 지급률은 매 반기 영업이익률에
+    따라 0~150% 사이에서 달라지므로 최신 발표를 확인하세요.
+  </div>
+  
+  <div class="footer-nav">
+    <a href="index.html">전체 목록</a>
+    <a href="bonus-index.html">성과급 계산기 모음</a>
+    <a href="about.html">사이트 소개</a>
+    <a href="privacy.html">개인정보처리방침</a>
+    <a href="contact.html">문의</a>
+  </div>
+
+  <script>
+  function calc() {
+    const annual = parseFloat(document.getElementById('annual').value) || 0;
+    const baseForPs = annual / 20;
+    const monthly = annual / 12;
+    const ps = Math.round(baseForPs * 29.64);
+    const pi = Math.round(monthly * 1.5);
+    document.getElementById('ps').textContent = ps.toLocaleString() + '만원';
+    document.getElementById('pi').textContent = pi.toLocaleString() + '만원';
+    document.getElementById('total').textContent = (ps + pi).toLocaleString() + '만원';
+  }
+  </script>
+</body>
+</html>

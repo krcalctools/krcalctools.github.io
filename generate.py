@@ -10,7 +10,7 @@ from calc import calculate
 from static_pages import about_html, privacy_html, contact_html, SITE_NAME
 
 OUTPUT_DIR = "docs"  # GitHub Pages가 /docs 폴더를 바로 서빙할 수 있어서 이 이름 사용
-BASE_URL = "https://example-salary-calc.com"  # 실배포 시 실제 도메인으로 교체
+BASE_URL = "https://krcalctools.github.io"
 
 START = 20_000_000
 END = 100_000_000
@@ -161,6 +161,7 @@ def main():
 <html lang="ko"><head><meta charset="utf-8"><title>{SITE_NAME} - 연봉별 실수령액 계산 결과</title></head>
 <body>
 <h1>연봉별 실수령액 계산 결과 ({len(salaries)}개)</h1>
+<p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기 바로가기</b></a></p>
 <p><a href="about.html">사이트 소개</a> | <a href="privacy.html">개인정보처리방침</a> | <a href="contact.html">문의</a></p>
 <ul>{links}</ul>
 </body></html>"""

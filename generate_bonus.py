@@ -181,6 +181,12 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     pages = []
 
+    # SAMSUNG_DIVISIONS에서 빠진 사업부의 예전 페이지 정리
+    valid_filenames = {f"samsung-{div['id']}.html" for div in SAMSUNG_DIVISIONS}
+    for fname in os.listdir(OUTPUT_DIR):
+        if fname.startswith("samsung-") and fname.endswith(".html") and fname not in valid_filenames:
+            os.remove(os.path.join(OUTPUT_DIR, fname))
+
     for div in SAMSUNG_DIVISIONS:
         filename = f"samsung-{div['id']}.html"
         with open(os.path.join(OUTPUT_DIR, filename), "w", encoding="utf-8") as f:

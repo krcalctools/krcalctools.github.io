@@ -29,34 +29,6 @@ SAMSUNG_DIVISIONS = [
         "opi_rate": 0.47,
         "tai_h1_rate": 0.75,
     },
-    {
-        "id": "mx",
-        "name": "MX사업부(모바일경험)",
-        "short": "MX(모바일)",
-        "opi_rate": 0.50,
-        "tai_h1_rate": 0.50,
-    },
-    {
-        "id": "vd",
-        "name": "VD사업부(영상디스플레이)",
-        "short": "VD(TV·디스플레이)",
-        "opi_rate": 0.12,
-        "tai_h1_rate": 0.50,
-    },
-    {
-        "id": "network",
-        "name": "네트워크사업부",
-        "short": "네트워크",
-        "opi_rate": 0.12,
-        "tai_h1_rate": 0.50,
-    },
-    {
-        "id": "da",
-        "name": "DA사업부(생활가전)",
-        "short": "DA(생활가전)",
-        "opi_rate": 0.12,
-        "tai_h1_rate": 0.25,
-    },
 ]
 
 # SK하이닉스 PS(초과이익분배금) - 기준급(연봉÷20) 기준, 연 1회(2월) 지급

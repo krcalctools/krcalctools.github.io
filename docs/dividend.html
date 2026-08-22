@@ -126,13 +126,13 @@
     <div class="field">
       <label for="stock">종목 선택</label>
       <select id="stock" onchange="calc()">
-        <option value="samsung">삼성전자 (연 1,668원/주)</option>
-<option value="ktng">KT&G (연 4,600원/주)</option>
-<option value="sktelecom">SK텔레콤 (연 2,710원/주)</option>
-<option value="kbfinancial">KB금융 (연 4,367원/주)</option>
-<option value="shinhan">신한지주 (연 2,590원/주)</option>
-<option value="hana">하나금융지주 (연 4,105원/주)</option>
-<option value="woori">우리금융지주 (연 1,360원/주)</option>
+        <option value="samsung">삼성전자 (연 1,668원/주, 배당률 0.59%)</option>
+<option value="ktng">KT&G (연 4,600원/주, 배당률 2.67%)</option>
+<option value="sktelecom">SK텔레콤 (연 2,710원/주, 배당률 2.65%)</option>
+<option value="kbfinancial">KB금융 (연 4,367원/주, 배당률 2.66%)</option>
+<option value="shinhan">신한지주 (연 2,590원/주, 배당률 2.49%)</option>
+<option value="hana">하나금융지주 (연 4,105원/주, 배당률 3.19%)</option>
+<option value="woori">우리금융지주 (연 1,360원/주, 배당률 4.28%)</option>
       </select>
     </div>
     <div class="field">
@@ -140,7 +140,7 @@
       <input type="number" id="shares" placeholder="예: 100" oninput="calc()">
     </div>
     <div class="field">
-      <label for="price">매수단가 (원, 배당수익률 계산용 · 선택)</label>
+      <label for="price">매수단가 (원, 비워두면 2026-08-21 종가로 자동 계산)</label>
       <input type="number" id="price" placeholder="예: 85000" oninput="calc()">
     </div>
 
@@ -148,34 +148,35 @@
       <div class="result-row"><span>연간 세전 배당금</span><span id="gross">-</span></div>
       <div class="result-row"><span>배당소득세 (15.4%)</span><span id="tax">-</span></div>
       <div class="result-row total"><span>연간 세후 실수령 배당금</span><span id="net">-</span></div>
-      <div class="result-row"><span>배당수익률 (매수단가 입력 시)</span><span id="yield">-</span></div>
+      <div class="result-row"><span>배당수익률</span><span id="yield">-</span></div>
     </div>
     <div class="stock-note" id="note"></div>
   </div>
 
-  <h2>2025년 확정 연간 배당금(DPS) 비교</h2>
+  <h2>2025년 확정 연간 배당금(DPS) 및 배당수익률 비교</h2>
   <table class="rule">
-    <tr><th>종목</th><th>연간 배당금(주당)</th><th>출처</th></tr>
-    <tr><td>삼성전자</td><td class="num">1,668원</td><td class="source"><a href="https://www.thelec.kr/news/articleView.html?idxno=51546" target="_blank" rel="noopener nofollow">출처</a></td></tr>
-<tr><td>KT&G</td><td class="num">4,600원</td><td class="source"><a href="https://en.ktng.com/ir/stock-info/dividend" target="_blank" rel="noopener nofollow">출처</a></td></tr>
-<tr><td>SK텔레콤</td><td class="num">2,710원</td><td class="source"><a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250212800008" target="_blank" rel="noopener nofollow">출처</a></td></tr>
-<tr><td>KB금융</td><td class="num">4,367원</td><td class="source"><a href="https://zdnet.co.kr/view/?no=20260205141805" target="_blank" rel="noopener nofollow">출처</a></td></tr>
-<tr><td>신한지주</td><td class="num">2,590원</td><td class="source"><a href="https://news.nate.com/view/20260205n22140" target="_blank" rel="noopener nofollow">출처</a></td></tr>
-<tr><td>하나금융지주</td><td class="num">4,105원</td><td class="source"><a href="https://www.etoday.co.kr/news/view/2551435" target="_blank" rel="noopener nofollow">출처</a></td></tr>
-<tr><td>우리금융지주</td><td class="num">1,360원</td><td class="source"><a href="https://www.thevaluenews.co.kr/news/196849" target="_blank" rel="noopener nofollow">출처</a></td></tr>
+    <tr><th>종목</th><th>연간 배당금</th><th>주가(2026-08-21)</th><th>배당수익률</th><th>출처</th></tr>
+    <tr><td>삼성전자</td><td class="num">1,668원</td><td class="num">281,500원</td><td class="num">0.59%</td><td class="source"><a href="https://www.thelec.kr/news/articleView.html?idxno=51546" target="_blank" rel="noopener nofollow">출처</a></td></tr>
+<tr><td>KT&G</td><td class="num">4,600원</td><td class="num">172,300원</td><td class="num">2.67%</td><td class="source"><a href="https://en.ktng.com/ir/stock-info/dividend" target="_blank" rel="noopener nofollow">출처</a></td></tr>
+<tr><td>SK텔레콤</td><td class="num">2,710원</td><td class="num">102,200원</td><td class="num">2.65%</td><td class="source"><a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250212800008" target="_blank" rel="noopener nofollow">출처</a></td></tr>
+<tr><td>KB금융</td><td class="num">4,367원</td><td class="num">164,300원</td><td class="num">2.66%</td><td class="source"><a href="https://zdnet.co.kr/view/?no=20260205141805" target="_blank" rel="noopener nofollow">출처</a></td></tr>
+<tr><td>신한지주</td><td class="num">2,590원</td><td class="num">104,100원</td><td class="num">2.49%</td><td class="source"><a href="https://news.nate.com/view/20260205n22140" target="_blank" rel="noopener nofollow">출처</a></td></tr>
+<tr><td>하나금융지주</td><td class="num">4,105원</td><td class="num">128,800원</td><td class="num">3.19%</td><td class="source"><a href="https://www.etoday.co.kr/news/view/2551435" target="_blank" rel="noopener nofollow">출처</a></td></tr>
+<tr><td>우리금융지주</td><td class="num">1,360원</td><td class="num">31,750원</td><td class="num">4.28%</td><td class="source"><a href="https://www.thevaluenews.co.kr/news/196849" target="_blank" rel="noopener nofollow">출처</a></td></tr>
   </table>
-  <p class="source" style="margin-top:8px">최근 보도에서는 4대 금융지주 중 우리금융지주(배당수익률 6%대 후반)·하나금융지주(5%대 중후반)가
-  상대적으로 높은 배당수익률로, 삼성전자는 배당수익률 자체는 낮은 대신 자사주 매입·소각 등 다른 주주환원 방식
-  비중이 큰 것으로 보도되었습니다. 배당수익률은 주가에 따라 매일 바뀌므로 정확한 값은 매수 시점에 직접 확인하세요.</p>
+  <p class="source" style="margin-top:8px">배당수익률 = 연간 배당금 ÷ 2026-08-21 종가. 배당 발표 시점(1~2월) 뉴스에서는 우리금융지주·하나금융지주가
+  6~7%대 고배당으로 보도됐지만, 이후 4대 금융지주 주가가 크게 오르면서(2년 새 시총 2배 언급도 있음) 2026-08-21
+  기준 수익률은 표와 같이 낮아졌습니다. 배당수익률은 주가에 따라 매일 바뀌는 값이니, 위 표는 참고용 스냅샷이고
+  정확한 값은 매수 시점 주가로 직접 다시 계산하세요.</p>
 
   <h2>종목별 참고사항</h2>
-  <ul><li><b>삼성전자</b>: 2025년 4분기 특별배당(5년 만) 포함. 특별배당은 매년 반복되지 않을 수 있음</li>
+  <ul><li><b>삼성전자</b>: 2025년 4분기 특별배당(5년 만) 포함. 특별배당은 매년 반복되지 않을 수 있음. AI/HBM 수요로 주가가 급등해 배당수익률은 낮은 편</li>
 <li><b>KT&G</b>: 2025년 결산배당 기준. 최근 5년간 매년 증가 추세</li>
 <li><b>SK텔레콤</b>: 2025년 4분기 결산배당은 실적 변동으로 미실시되어 예년보다 총액이 낮음</li>
 <li><b>KB금융</b>: 2025년 4분기 DPS 1,605원 포함 연간 확정치</li>
 <li><b>신한지주</b>: 2025년 연간 확정, 주주환원율 사상 첫 50% 돌파</li>
 <li><b>하나금융지주</b>: 전년 대비 14.0%(505원) 증가, 사상 첫 순이익 4조 클럽</li>
-<li><b>우리금융지주</b>: 현금배당성향 첫 30% 상회, 4대 금융지주 중 배당수익률 최상위권으로 보도됨</li></ul>
+<li><b>우리금융지주</b>: 현금배당성향 첫 30% 상회. 배당 발표 시점보다 주가가 크게 올라 수익률이 낮아짐</li></ul>
 
   <h2>배당소득세는 왜 15.4%인가</h2>
   <p>국내 상장주식 배당소득에는 소득세 14% + 지방소득세 1.4%가 원천징수됩니다. 단, 금융소득(이자+배당)이
@@ -201,29 +202,29 @@
   </div>
 
   <script>
-  const STOCKS = {"samsung": {"name": "삼성전자", "dps": 1668}, "ktng": {"name": "KT&G", "dps": 4600}, "sktelecom": {"name": "SK텔레콤", "dps": 2710}, "kbfinancial": {"name": "KB금융", "dps": 4367}, "shinhan": {"name": "신한지주", "dps": 2590}, "hana": {"name": "하나금융지주", "dps": 4105}, "woori": {"name": "우리금융지주", "dps": 1360}};
+  const STOCKS = {"samsung": {"name": "삼성전자", "dps": 1668, "price": 281500}, "ktng": {"name": "KT&G", "dps": 4600, "price": 172300}, "sktelecom": {"name": "SK텔레콤", "dps": 2710, "price": 102200}, "kbfinancial": {"name": "KB금융", "dps": 4367, "price": 164300}, "shinhan": {"name": "신한지주", "dps": 2590, "price": 104100}, "hana": {"name": "하나금융지주", "dps": 4105, "price": 128800}, "woori": {"name": "우리금융지주", "dps": 1360, "price": 31750}};
 
   function calc() {
     const stockId = document.getElementById('stock').value;
     const shares = parseFloat(document.getElementById('shares').value) || 0;
-    const price = parseFloat(document.getElementById('price').value) || 0;
+    const priceInput = document.getElementById('price');
     const stock = STOCKS[stockId];
-    if (!stock || shares <= 0) return;
+    if (!stock) return;
 
-    const gross = stock.dps * shares;
-    const tax = Math.round(gross * 0.154);
-    const net = gross - tax;
+    if (!priceInput.value) priceInput.placeholder = stock.price.toLocaleString();
+    const price = parseFloat(priceInput.value) || stock.price;
 
-    document.getElementById('gross').textContent = gross.toLocaleString() + '원';
-    document.getElementById('tax').textContent = tax.toLocaleString() + '원';
-    document.getElementById('net').textContent = net.toLocaleString() + '원';
-
-    if (price > 0) {
-      const yieldPct = (stock.dps / price * 100).toFixed(2);
-      document.getElementById('yield').textContent = yieldPct + '%';
-    } else {
-      document.getElementById('yield').textContent = '매수단가 입력 필요';
+    if (shares > 0) {
+      const gross = stock.dps * shares;
+      const tax = Math.round(gross * 0.154);
+      const net = gross - tax;
+      document.getElementById('gross').textContent = gross.toLocaleString() + '원';
+      document.getElementById('tax').textContent = tax.toLocaleString() + '원';
+      document.getElementById('net').textContent = net.toLocaleString() + '원';
     }
+
+    const yieldPct = (stock.dps / price * 100).toFixed(2);
+    document.getElementById('yield').textContent = yieldPct + '%' + (priceInput.value ? '' : ' (기준가 ' + stock.price.toLocaleString() + '원)');
   }
   window.onload = calc;
   </script>

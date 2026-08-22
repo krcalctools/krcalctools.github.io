@@ -7,7 +7,7 @@
 import os
 import json
 from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEADER, FAVICON
-from dividend_data import STOCKS
+from dividend_data import STOCKS, PRICE_DATE
 
 OUTPUT_DIR = "docs"
 
@@ -17,12 +17,16 @@ def dividend_html():
     desc = "보유 주식 수를 입력하면 2025년 확정 배당금 기준 세후 배당 실수령액을 계산해드립니다."
 
     options = "\n".join(
-        f'<option value="{s["id"]}">{s["name"]} (연 {s["dps"]:,}원/주)</option>' for s in STOCKS
+        f'<option value="{s["id"]}">{s["name"]} (연 {s["dps"]:,}원/주, 배당률 {s["yield_pct"]}%)</option>' for s in STOCKS
     )
-    stock_data_json = json.dumps({s["id"]: {"name": s["name"], "dps": s["dps"]} for s in STOCKS}, ensure_ascii=False)
+    stock_data_json = json.dumps(
+        {s["id"]: {"name": s["name"], "dps": s["dps"], "price": s["price"]} for s in STOCKS},
+        ensure_ascii=False,
+    )
 
     table_rows = "\n".join(
         f'<tr><td>{s["name"]}</td><td class="num">{s["dps"]:,}원</td>'
+        f'<td class="num">{s["price"]:,}원</td><td class="num">{s["yield_pct"]}%</td>'
         f'<td class="source"><a href="{s["source_url"]}" target="_blank" rel="noopener nofollow">출처</a></td></tr>'
         for s in STOCKS
     )
@@ -56,7 +60,7 @@ def dividend_html():
       <input type="number" id="shares" placeholder="예: 100" oninput="calc()">
     </div>
     <div class="field">
-      <label for="price">매수단가 (원, 배당수익률 계산용 · 선택)</label>
+      <label for="price">매수단가 (원, 비워두면 {PRICE_DATE} 종가로 자동 계산)</label>
       <input type="number" id="price" placeholder="예: 85000" oninput="calc()">
     </div>
 
@@ -64,19 +68,20 @@ def dividend_html():
       <div class="result-row"><span>연간 세전 배당금</span><span id="gross">-</span></div>
       <div class="result-row"><span>배당소득세 (15.4%)</span><span id="tax">-</span></div>
       <div class="result-row total"><span>연간 세후 실수령 배당금</span><span id="net">-</span></div>
-      <div class="result-row"><span>배당수익률 (매수단가 입력 시)</span><span id="yield">-</span></div>
+      <div class="result-row"><span>배당수익률</span><span id="yield">-</span></div>
     </div>
     <div class="stock-note" id="note"></div>
   </div>
 
-  <h2>2025년 확정 연간 배당금(DPS) 비교</h2>
+  <h2>2025년 확정 연간 배당금(DPS) 및 배당수익률 비교</h2>
   <table class="rule">
-    <tr><th>종목</th><th>연간 배당금(주당)</th><th>출처</th></tr>
+    <tr><th>종목</th><th>연간 배당금</th><th>주가({PRICE_DATE})</th><th>배당수익률</th><th>출처</th></tr>
     {table_rows}
   </table>
-  <p class="source" style="margin-top:8px">최근 보도에서는 4대 금융지주 중 우리금융지주(배당수익률 6%대 후반)·하나금융지주(5%대 중후반)가
-  상대적으로 높은 배당수익률로, 삼성전자는 배당수익률 자체는 낮은 대신 자사주 매입·소각 등 다른 주주환원 방식
-  비중이 큰 것으로 보도되었습니다. 배당수익률은 주가에 따라 매일 바뀌므로 정확한 값은 매수 시점에 직접 확인하세요.</p>
+  <p class="source" style="margin-top:8px">배당수익률 = 연간 배당금 ÷ {PRICE_DATE} 종가. 배당 발표 시점(1~2월) 뉴스에서는 우리금융지주·하나금융지주가
+  6~7%대 고배당으로 보도됐지만, 이후 4대 금융지주 주가가 크게 오르면서(2년 새 시총 2배 언급도 있음) {PRICE_DATE}
+  기준 수익률은 표와 같이 낮아졌습니다. 배당수익률은 주가에 따라 매일 바뀌는 값이니, 위 표는 참고용 스냅샷이고
+  정확한 값은 매수 시점 주가로 직접 다시 계산하세요.</p>
 
   <h2>종목별 참고사항</h2>
   <ul>{notes}</ul>
@@ -99,24 +104,24 @@ def dividend_html():
   function calc() {{
     const stockId = document.getElementById('stock').value;
     const shares = parseFloat(document.getElementById('shares').value) || 0;
-    const price = parseFloat(document.getElementById('price').value) || 0;
+    const priceInput = document.getElementById('price');
     const stock = STOCKS[stockId];
-    if (!stock || shares <= 0) return;
+    if (!stock) return;
 
-    const gross = stock.dps * shares;
-    const tax = Math.round(gross * 0.154);
-    const net = gross - tax;
+    if (!priceInput.value) priceInput.placeholder = stock.price.toLocaleString();
+    const price = parseFloat(priceInput.value) || stock.price;
 
-    document.getElementById('gross').textContent = gross.toLocaleString() + '원';
-    document.getElementById('tax').textContent = tax.toLocaleString() + '원';
-    document.getElementById('net').textContent = net.toLocaleString() + '원';
-
-    if (price > 0) {{
-      const yieldPct = (stock.dps / price * 100).toFixed(2);
-      document.getElementById('yield').textContent = yieldPct + '%';
-    }} else {{
-      document.getElementById('yield').textContent = '매수단가 입력 필요';
+    if (shares > 0) {{
+      const gross = stock.dps * shares;
+      const tax = Math.round(gross * 0.154);
+      const net = gross - tax;
+      document.getElementById('gross').textContent = gross.toLocaleString() + '원';
+      document.getElementById('tax').textContent = tax.toLocaleString() + '원';
+      document.getElementById('net').textContent = net.toLocaleString() + '원';
     }}
+
+    const yieldPct = (stock.dps / price * 100).toFixed(2);
+    document.getElementById('yield').textContent = yieldPct + '%' + (priceInput.value ? '' : ' (기준가 ' + stock.price.toLocaleString() + '원)');
   }}
   window.onload = calc;
   </script>

@@ -7,7 +7,7 @@ STEP/START/END 만 조절하면 페이지 수가 그대로 늘어난다.
 """
 import os
 from calc import calculate
-from static_pages import about_html, privacy_html, contact_html, SITE_NAME, GA_SNIPPET, FOOTER_NAV
+from static_pages import about_html, privacy_html, contact_html, SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEADER, FAVICON
 
 OUTPUT_DIR = "docs"  # GitHub Pages가 /docs 폴더를 바로 서빙할 수 있어서 이 이름 사용
 BASE_URL = "https://krcalctools.github.io"
@@ -121,26 +121,11 @@ def page_html(salary, prev_salary, next_salary):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-  body {{ font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; }}
-  h1 {{ font-size: 22px; }}
-  .headline {{ background: #f0f6ff; border-radius: 12px; padding: 24px; text-align: center; margin: 20px 0; }}
-  .headline .amount {{ font-size: 34px; font-weight: 800; color: #1958c9; }}
-  table {{ width: 100%; border-collapse: collapse; margin: 20px 0; }}
-  th, td {{ text-align: left; padding: 10px 8px; border-bottom: 1px solid #eee; font-size: 14px; }}
-  th {{ color: #666; font-weight: 500; }}
-  .nav {{ margin-top: 30px; font-size: 14px; }}
-  .explain {{ margin-top: 28px; font-size: 14px; color: #444; }}
-  .explain h2 {{ font-size: 15px; }}
-  .steps {{ margin: 12px 0 0; padding-left: 20px; }}
-  .steps li {{ margin-bottom: 8px; }}
-  .steps .num {{ color: #1958c9; font-weight: 600; }}
-  .disclaimer {{ margin-top: 40px; font-size: 12px; color: #999; line-height: 1.6; }}
-  .footer-nav {{ margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; }}
-  .footer-nav a {{ color: #666; margin-right: 12px; }}
-</style>
+{FAVICON}
+<style>{SITE_STYLE}</style>
 </head>
 <body>
+{SITE_HEADER}
   <h1>연봉 {fmt(man)}만원 실수령액 계산 결과</h1>
   <div class="headline">
     <div>세전 연봉 {fmt(man)}만원의 월 실수령액</div>
@@ -240,19 +225,10 @@ def main():
 <meta name="google-site-verification" content="22jd1Q9gwpfGcwd0MvSlxlhC8mekAJ9CjNMXHGUHASE" />
 <meta name="naver-site-verification" content="2619bf9b6ab4ed06c679f8f24d5b50df019827ac" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-  body {{ font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; }}
-  .calc-box {{ background: #f7f7fb; border-radius: 12px; padding: 20px; margin: 20px 0; }}
-  .field {{ margin-bottom: 14px; }}
-  .field label {{ display: block; font-size: 13px; color: #555; margin-bottom: 4px; }}
-  .field input {{ width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; }}
-  .result {{ margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e2ea; }}
-  .result-row {{ display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }}
-  .result-row.total {{ font-weight: 700; font-size: 17px; color: #1958c9; border-top: 1px dashed #ccc; margin-top: 6px; padding-top: 10px; }}
-  .footer-nav {{ margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; }}
-  .footer-nav a {{ color: #666; margin-right: 12px; }}
-</style></head>
+{FAVICON}
+<style>{SITE_STYLE}</style></head>
 <body>
+{SITE_HEADER}
 <h1>연봉 실수령액 계산기</h1>
 <p>정확한 연봉을 입력하면 바로 계산됩니다. 아래 목록은 자주 찾는 연봉 구간별 상세 계산 결과입니다.</p>
 

@@ -5,32 +5,12 @@
 총 수급액 = 1일 구직급여액 × 소정급여일수(가입기간·연령별, 고용보험법 별표1)
 """
 import os
-from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV
+from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEADER, FAVICON
 
 OUTPUT_DIR = "docs"
 
 DAILY_CAP = 68100    # 2026년 상한액
 DAILY_FLOOR = 66048  # 2026년 하한액 (최저임금 10,320원의 80% × 8시간)
-
-STYLE = """
-  body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.6; }
-  h1 { font-size: 22px; }
-  h2 { font-size: 16px; margin-top: 26px; }
-  .calc-box { background: #f7f7fb; border-radius: 12px; padding: 20px; margin: 20px 0; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 13px; color: #555; margin-bottom: 4px; }
-  .field input[type=number], .field input[type=date] { width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; }
-  .field.checkbox { display: flex; align-items: center; gap: 8px; }
-  .field.checkbox label { margin-bottom: 0; }
-  .result { margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e2ea; }
-  .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
-  .result-row.total { font-weight: 700; font-size: 17px; color: #1958c9; border-top: 1px dashed #ccc; margin-top: 6px; padding-top: 10px; }
-  .source { font-size: 12px; color: #888; margin-top: 4px; }
-  .source a { color: #888; }
-  .disclaimer { margin-top: 30px; font-size: 12px; color: #999; line-height: 1.6; }
-  table.rule { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
-  table.rule th, table.rule td { border: 1px solid #eee; padding: 6px 8px; text-align: center; }
-"""
 
 
 def unemployment_html():
@@ -45,9 +25,11 @@ def unemployment_html():
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>{STYLE}</style>
+{FAVICON}
+<style>{SITE_STYLE}</style>
 </head>
 <body>
+{SITE_HEADER}
   <h1>실업급여(구직급여) 계산기</h1>
   <p>이직 전 3개월 평균 급여, 고용보험 가입기간, 연령을 입력하면 2026년 기준 예상 구직급여를 계산합니다.</p>
 

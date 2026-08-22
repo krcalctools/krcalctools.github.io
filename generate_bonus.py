@@ -6,7 +6,7 @@ JS로 즉시 계산하는 방식(인터랙티브 계산기)으로 만든다.
 기존 salary-*.html 과 같은 docs/ 폴더에 생성되어 한 사이트에 통합된다.
 """
 import os
-from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV
+from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEADER, FAVICON
 from bonus_data import (
     SAMSUNG_DIVISIONS, SAMSUNG_OPI_SOURCE, SAMSUNG_OPI_SOURCE_URL,
     SAMSUNG_TAI_H1_SOURCE, SAMSUNG_TAI_H1_SOURCE_URL,
@@ -15,26 +15,6 @@ from bonus_data import (
 )
 
 OUTPUT_DIR = "docs"
-
-STYLE = """
-  body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.6; }
-  h1 { font-size: 22px; }
-  h2 { font-size: 16px; margin-top: 26px; }
-  .calc-box { background: #f7f7fb; border-radius: 12px; padding: 20px; margin: 20px 0; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 13px; color: #555; margin-bottom: 4px; }
-  .field input { width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; }
-  .result { margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e2ea; }
-  .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
-  .result-row.total { font-weight: 700; font-size: 17px; color: #1958c9; border-top: 1px dashed #ccc; margin-top: 6px; padding-top: 10px; }
-  .pending { color: #b8860b; font-size: 12px; }
-  .source { font-size: 12px; color: #888; margin-top: 4px; }
-  .source a { color: #888; }
-  .disclaimer { margin-top: 30px; font-size: 12px; color: #999; line-height: 1.6; }
-  .footer-nav { margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; }
-  .footer-nav a { color: #666; margin-right: 12px; }
-  .division-list { margin: 16px 0; padding-left: 20px; font-size: 14px; }
-"""
 
 FOOTER = FOOTER_NAV
 
@@ -53,9 +33,11 @@ def samsung_page(div):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>{STYLE}</style>
+{FAVICON}
+<style>{SITE_STYLE}</style>
 </head>
 <body>
+{SITE_HEADER}
   <h1>삼성전자 {div['name']} 성과급 계산기</h1>
   <p>OPI(초과이익성과급)와 TAI(목표달성장려금)를 최근 확정된 지급률 기준으로 계산합니다.</p>
 
@@ -122,9 +104,11 @@ def skhynix_page():
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>{STYLE}</style>
+{FAVICON}
+<style>{SITE_STYLE}</style>
 </head>
 <body>
+{SITE_HEADER}
   <h1>SK하이닉스 성과급 계산기</h1>
   <p>PS(초과이익분배금)와 PI(생산성격려금)를 최근 확정된 지급률 기준으로 계산합니다.</p>
 
@@ -182,8 +166,10 @@ def bonus_index_html(pages):
 {GA_SNIPPET}
 <meta charset="utf-8"><title>성과급 계산기 모음 - {SITE_NAME}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>{STYLE}</style></head>
+{FAVICON}
+<style>{SITE_STYLE}</style></head>
 <body>
+{SITE_HEADER}
 <h1>대기업 성과급 계산기</h1>
 <p>사업부/회사를 선택해서 연봉·기본급을 입력하면 예상 성과급을 바로 계산해드립니다.</p>
 <ul class="division-list">{items}</ul>

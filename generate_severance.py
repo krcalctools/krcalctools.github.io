@@ -6,26 +6,9 @@
 (근로자퇴직급여 보장법 제8조, 근로기준법 제2조)
 """
 import os
-from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV
+from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEADER, FAVICON
 
 OUTPUT_DIR = "docs"
-
-STYLE = """
-  body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.6; }
-  h1 { font-size: 22px; }
-  h2 { font-size: 16px; margin-top: 26px; }
-  .calc-box { background: #f7f7fb; border-radius: 12px; padding: 20px; margin: 20px 0; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 13px; color: #555; margin-bottom: 4px; }
-  .field input { width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; }
-  .result { margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e2ea; }
-  .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
-  .result-row.total { font-weight: 700; font-size: 17px; color: #1958c9; border-top: 1px dashed #ccc; margin-top: 6px; padding-top: 10px; }
-  .warning { margin-top: 12px; padding: 10px 12px; background: #fff4e5; border-radius: 8px; font-size: 13px; color: #92400e; display: none; }
-  .source { font-size: 12px; color: #888; margin-top: 4px; }
-  .source a { color: #888; }
-  .disclaimer { margin-top: 30px; font-size: 12px; color: #999; line-height: 1.6; }
-"""
 
 
 def severance_html():
@@ -40,9 +23,11 @@ def severance_html():
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>{STYLE}</style>
+{FAVICON}
+<style>{SITE_STYLE}</style>
 </head>
 <body>
+{SITE_HEADER}
   <h1>퇴직금 계산기</h1>
   <p>입사일과 퇴사일, 퇴직 전 3개월 평균 월급여를 입력하면 근로기준법 기준 예상 퇴직금을 계산합니다.</p>
 

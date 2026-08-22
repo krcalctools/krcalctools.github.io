@@ -1,7 +1,7 @@
 """
 연봉 실수령액 페이지 대량 생성 스크립트 (프로그래매틱 SEO 예시)
 
-STEP/START/END 만 조절하면 페이지 수가 그대로 늘어난다.
+START_LOW/BOUNDARY/END/STEP_LOW/STEP_HIGH 만 조절하면 페이지 수/구간이 그대로 바뀐다.
 각 페이지는 독립된 정적 HTML이라 호스팅 비용이 거의 안 들고(Vercel/Netlify 무료 티어),
 검색엔진이 각각을 별도 URL로 색인한다.
 """
@@ -16,9 +16,17 @@ PERCENTILE_TABLE_JS = f"const PERCENTILE_TABLE = {json.dumps(PERCENTILE_TABLE)};
 OUTPUT_DIR = "docs"  # GitHub Pages가 /docs 폴더를 바로 서빙할 수 있어서 이 이름 사용
 BASE_URL = "https://krcalctools.github.io"
 
-START = 20_000_000
-END = 100_000_000
-STEP = 1_000_000  # 100만원 단위. 실제 검색 패턴(딱 떨어지는 숫자)에 맞추고 유사페이지 과다생성을 피함
+START_LOW = 30_000_000     # 3,000만원
+BOUNDARY = 100_000_000     # 1억원 - 이 지점부터 STEP_HIGH로 전환
+END = 150_000_000          # 1억 5,000만원
+STEP_LOW = 1_000_000       # 1억 미만: 100만원 단위 (실제 검색 패턴에 맞춤)
+STEP_HIGH = 10_000_000     # 1억 이상: 1,000만원 단위 (고연봉 구간은 더 성기게)
+
+
+def build_salaries():
+    low = list(range(START_LOW, BOUNDARY, STEP_LOW))
+    high = list(range(BOUNDARY, END + 1, STEP_HIGH))
+    return low + high
 
 
 SALARY_CALC_JS = """
@@ -118,6 +126,17 @@ def fmt(n):
     return f"{n:,}"
 
 
+def fmt_eok(salary_won):
+    """1억원 이상은 '1억 500만원' 식으로, 미만은 기존처럼 '만원' 단위로 표기"""
+    eok = salary_won // 100_000_000
+    man = (salary_won % 100_000_000) // 10_000
+    if eok == 0:
+        return f"{man:,}만원"
+    if man == 0:
+        return f"{eok}억원"
+    return f"{eok}억 {man:,}만원"
+
+
 def slug(salary):
     man = salary // 10_000
     return f"salary-{man}"
@@ -126,15 +145,16 @@ def slug(salary):
 def page_html(salary, prev_salary, next_salary):
     r = calculate(salary)
     man = salary // 10_000
+    label = fmt_eok(salary)
     top_pct = estimate_top_percent(man)
-    title = f"연봉 {fmt(man)}만원 실수령액 - 월 {fmt(r['net_monthly'])}원 (2025년 기준)"
-    desc = f"연봉 {fmt(man)}만원의 세후 실수령액은 월 약 {fmt(r['net_monthly'])}원입니다. 4대보험, 소득세 공제 내역과 소득 순위를 확인하세요."
+    title = f"연봉 {label} 실수령액 - 월 {fmt(r['net_monthly'])}원 (2025년 기준)"
+    desc = f"연봉 {label}의 세후 실수령액은 월 약 {fmt(r['net_monthly'])}원입니다. 4대보험, 소득세 공제 내역과 소득 순위를 확인하세요."
 
     nav_links = []
     if prev_salary:
-        nav_links.append(f'<a href="{slug(prev_salary)}.html">← 연봉 {prev_salary//10_000:,}만원</a>')
+        nav_links.append(f'<a href="{slug(prev_salary)}.html">← 연봉 {fmt_eok(prev_salary)}</a>')
     if next_salary:
-        nav_links.append(f'<a href="{slug(next_salary)}.html">연봉 {next_salary//10_000:,}만원 →</a>')
+        nav_links.append(f'<a href="{slug(next_salary)}.html">연봉 {fmt_eok(next_salary)} →</a>')
     nav_html = " | ".join(nav_links)
 
     return f"""<!doctype html>
@@ -150,15 +170,15 @@ def page_html(salary, prev_salary, next_salary):
 </head>
 <body>
 {SITE_HEADER}
-  <h1>연봉 {fmt(man)}만원 실수령액 계산 결과</h1>
+  <h1>연봉 {label} 실수령액 계산 결과</h1>
   <div class="headline">
-    <div>세전 연봉 {fmt(man)}만원의 월 실수령액</div>
+    <div>세전 연봉 {label}의 월 실수령액</div>
     <div class="amount">{fmt(r['net_monthly'])}원</div>
     <div>연 실수령액 약 {fmt(r['net_annual'])}원</div>
   </div>
 
   <div class="percentile-badge">
-    💡 연봉 {fmt(man)}만원은 대한민국 근로소득자 중 <b>상위 {top_pct}%</b>에 해당하는 것으로 추정됩니다.
+    💡 연봉 {label}은(는) 대한민국 근로소득자 중 <b>상위 {top_pct}%</b>에 해당하는 것으로 추정됩니다.
     <span class="percentile-source">({PERCENTILE_SOURCE_NOTE})</span>
   </div>
 
@@ -176,9 +196,9 @@ def page_html(salary, prev_salary, next_salary):
   <div class="nav">{nav_html}</div>
 
   <div class="explain">
-    <h2>연봉 {fmt(man)}만원의 실수령액 계산 과정</h2>
+    <h2>연봉 {label}의 실수령액 계산 과정</h2>
     <ol class="steps">
-      <li>월 급여 = 연봉 {fmt(man)}만원 ÷ 12 = <span class="num">{fmt(r['gross_monthly'])}원</span></li>
+      <li>월 급여 = 연봉 {label} ÷ 12 = <span class="num">{fmt(r['gross_monthly'])}원</span></li>
       <li>4대보험 공제(월) = 국민연금 {fmt(r['pension'])}원 + 건강보험 {fmt(r['health'])}원
         + 장기요양보험 {fmt(r['longterm_care'])}원 + 고용보험 {fmt(r['employment'])}원
         = <span class="num">{fmt(r['pension'] + r['health'] + r['longterm_care'] + r['employment'])}원</span></li>
@@ -218,9 +238,9 @@ def page_html(salary, prev_salary, next_salary):
 
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    salaries = list(range(START, END + 1, STEP))
+    salaries = build_salaries()
 
-    # START/END/STEP이 바뀌면 예전 값으로 만들어진 salary-*.html이 남을 수 있어 먼저 정리
+    # 구간/단위가 바뀌면 예전 값으로 만들어진 salary-*.html이 남을 수 있어 먼저 정리
     valid_filenames = {f"{slug(s)}.html" for s in salaries}
     for fname in os.listdir(OUTPUT_DIR):
         if fname.startswith("salary-") and fname.endswith(".html") and fname not in valid_filenames:
@@ -245,7 +265,7 @@ def main():
 
     # index.html - 전체 목록
     links = "\n".join(
-        f'<li><a href="{slug(s)}.html">연봉 {s//10_000:,}만원 실수령액</a></li>' for s in salaries
+        f'<li><a href="{slug(s)}.html">연봉 {fmt_eok(s)} 실수령액</a></li>' for s in salaries
     )
     index_html = f"""<!doctype html>
 <html lang="ko"><head>

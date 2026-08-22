@@ -20,6 +20,7 @@ FOOTER_NAV = """
     <a href="bonus-index.html">성과급 계산기</a>
     <a href="severance.html">퇴직금 계산기</a>
     <a href="unemployment.html">실업급여 계산기</a>
+    <a href="dividend.html">배당금 계산기</a>
     <a href="about.html">사이트 소개</a>
     <a href="privacy.html">개인정보처리방침</a>
     <a href="contact.html">문의</a>

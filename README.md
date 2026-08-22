@@ -3,10 +3,12 @@
 ## 구조
 - `calc.py` — 4대보험/소득세 계산 로직 (요율은 2025년 예시값, 매년 갱신 필요)
 - `static_pages.py` — about/privacy/contact 페이지 (SITE_NAME, CONTACT_EMAIL 여기서 수정)
-- `generate.py` — 연봉 구간별 실수령액 페이지 + index.html 생성
-- `bonus_data.py` — 삼성전자/SK하이닉스 성과급 지급률 데이터 (뉴스 기반, 반기/연 단위로 갱신 필요)
-- `generate_bonus.py` — 성과급(OPI·TAI, PS·PI) 인터랙티브 계산기 페이지 생성
-- `build.py` — 위 두 generate 스크립트 + sitemap.xml을 한 번에 빌드 (실제로는 이걸 실행)
+- `generate.py` — 연봉 구간별 실수령액 페이지(프리셋) + 실시간 입력 계산기가 있는 index.html 생성
+- `bonus_data.py` / `generate_bonus.py` — 삼성전자/SK하이닉스 성과급(OPI·TAI, PS·PI) 계산기 (뉴스 기반, 반기/연 단위로 갱신 필요)
+- `generate_severance.py` — 퇴직금 계산기 (입사일·퇴사일 기반)
+- `generate_unemployment.py` — 실업급여(구직급여) 계산기 (2026년 상한액 68,100원/하한액 66,048원 기준, 매년 갱신 필요)
+- `dividend_data.py` / `generate_dividend.py` — 배당금 계산기 (7개 대형주 2025년 확정 DPS 기준, 결산 시즌마다 갱신 필요)
+- `build.py` — 위 모든 generate 스크립트 + sitemap.xml을 한 번에 빌드 (실제로는 이걸 실행)
 - `docs/` — 생성된 정적 사이트 (GitHub Pages가 이 폴더를 그대로 서빙함)
 
 ## 로컬에서 다시 생성하기
@@ -22,6 +24,11 @@ python build.py
 - 삼성 TAI 하반기: 매년 12월 말 발표
 - 삼성 OPI, SK하이닉스 PS: 매년 1~2월 발표
 - SK하이닉스 PI: 반기(7월/1월경)마다 발표
+
+## 배당금 계산기 데이터 갱신
+`dividend_data.py`의 DPS(주당배당금)는 각 회사 결산배당이 확정되는 매년 1~2월경 최신 공시(DART)로
+갱신해야 합니다. 배당수익률은 주가 변동 때문에 고정값으로 넣지 않고 사용자가 매수단가를 입력하면
+계산되도록 설계되어 있음 — 이 방식을 유지할 것 (특정 시점 주가를 하드코딩하면 곧 부정확해짐).
 
 ## 배포 전 반드시 할 일
 1. `generate.py`의 `BASE_URL`을 실제 구매한 도메인으로 교체

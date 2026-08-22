@@ -10,6 +10,7 @@ from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEA
 from bonus_data import (
     SAMSUNG_DIVISIONS, SAMSUNG_OPI_SOURCE, SAMSUNG_OPI_SOURCE_URL,
     SAMSUNG_TAI_H1_SOURCE, SAMSUNG_TAI_H1_SOURCE_URL,
+    SPECIAL_BONUS_SOURCE, SPECIAL_BONUS_SOURCE_URL,
     SKHYNIX_PS_RATE, SKHYNIX_PS_SOURCE, SKHYNIX_PS_SOURCE_URL,
     SKHYNIX_PI_RATE_RECENT, SKHYNIX_PI_SOURCE, SKHYNIX_PI_SOURCE_URL,
 )
@@ -19,11 +20,17 @@ OUTPUT_DIR = "docs"
 FOOTER = FOOTER_NAV
 
 
+def fmt(n):
+    return f"{n:,}"
+
+
 def samsung_page(div):
     opi_pct = round(div["opi_rate"] * 100)
     tai_pct = round(div["tai_h1_rate"] * 100)
-    title = f"삼성전자 {div['short']} 성과급 계산기 - OPI·TAI 2026"
-    desc = f"삼성전자 {div['name']}의 2026년 OPI({opi_pct}%)·상반기 TAI({tai_pct}%) 기준 예상 성과급을 계산해보세요."
+    special_man = div["special_bonus_man"]
+    special_eok = special_man / 10000
+    title = f"삼성전자 {div['short']} 성과급 통합 계산기 - OPI·TAI·특별경영성과급 2026"
+    desc = f"삼성전자 {div['name']}의 OPI·TAI·특별경영성과급까지 합산한 2026년 예상 총 성과급을 계산해보세요."
 
     return f"""<!doctype html>
 <html lang="ko">
@@ -38,8 +45,8 @@ def samsung_page(div):
 </head>
 <body>
 {SITE_HEADER}
-  <h1>삼성전자 {div['name']} 성과급 계산기</h1>
-  <p>OPI(초과이익성과급)와 TAI(목표달성장려금)를 최근 확정된 지급률 기준으로 계산합니다.</p>
+  <h1>삼성전자 {div['name']} 성과급 통합 계산기</h1>
+  <p>OPI(초과이익성과급)·TAI(목표달성장려금)·특별경영성과급까지 전부 합산한 예상 총 성과급을 계산합니다.</p>
 
   <div class="calc-box">
     <div class="field">
@@ -55,31 +62,37 @@ def samsung_page(div):
       <div class="result-row"><span>OPI ({opi_pct}%, 연봉 기준)</span><span id="opi">-</span></div>
       <div class="result-row"><span>TAI 상반기 ({tai_pct}%, 월기본급 기준)</span><span id="tai">-</span></div>
       <div class="result-row"><span>TAI 하반기</span><span class="pending">12월 말 발표 예정 (미정)</span></div>
-      <div class="result-row total"><span>확정분 합계 (세전)</span><span id="total">-</span></div>
+      <div class="result-row"><span>특별경영성과급 (2026년 첫 지급분, 1인당 추정)</span><span>{fmt(special_man)}만원 (약 {special_eok:g}억원)</span></div>
+      <div class="result-row total"><span>예상 총 성과급 합계 (세전)</span><span id="total">-</span></div>
     </div>
+    <p class="stock-note">※ 특별경영성과급은 연봉과 무관하게 보도된 1인당 평균 추정치를 그대로 더한 값입니다.
+    {div['special_bonus_note']}</p>
   </div>
 
   <h2>계산 기준</h2>
-  <p>OPI = 연봉 × {opi_pct}%<br>TAI(상반기) = 월 기본급 × {tai_pct}%</p>
+  <p>OPI = 연봉 × {opi_pct}%<br>TAI(상반기) = 월 기본급 × {tai_pct}%<br>
+  특별경영성과급 = 사업부 평균 추정치 {fmt(special_man)}만원 (연봉 무관 고정값)</p>
   <p class="source">OPI 지급률 출처: {SAMSUNG_OPI_SOURCE} — <a href="{SAMSUNG_OPI_SOURCE_URL}" target="_blank" rel="noopener nofollow">기사 보기</a></p>
   <p class="source">TAI 지급률 출처: {SAMSUNG_TAI_H1_SOURCE} — <a href="{SAMSUNG_TAI_H1_SOURCE_URL}" target="_blank" rel="noopener nofollow">기사 보기</a></p>
+  <p class="source">특별경영성과급 출처: {SPECIAL_BONUS_SOURCE} — <a href="{SPECIAL_BONUS_SOURCE_URL}" target="_blank" rel="noopener nofollow">기사 보기</a>
+  · <a href="samsung-special-bonus.html">제도 상세 설명 보기</a></p>
 
-  <h2>OPI·TAI란?</h2>
+  <h2>OPI·TAI·특별경영성과급이란?</h2>
   <p><b>OPI(초과이익성과급, 구 PS)</b>는 사업부가 목표 이익을 초과 달성했을 때 연봉을 기준으로 연 1회(1월) 지급됩니다.
-  <b>TAI(목표달성장려금, 구 PI)</b>는 사업부 목표 달성 여부에 따라 월 기본급을 기준으로 반기마다(7월·12월) 지급됩니다.</p>
+  <b>TAI(목표달성장려금, 구 PI)</b>는 사업부 목표 달성 여부에 따라 월 기본급을 기준으로 반기마다(7월·12월) 지급됩니다.
+  <b>특별경영성과급</b>은 2026년 5월 신설된 DS부문 전용 제도로, 연봉과 무관하게 부문공통 균등배분 + 사업부 실적별
+  추가배분으로 결정되며 전액 자사주로 지급됩니다.</p>
 
   <div class="disclaimer">
-    ※ 세전 금액이며, 실제로는 상여소득세(원천징수 후 다음해 연말정산에서 재정산)가 별도로 공제됩니다.
-    지급률은 사업부 실적에 따라 매 반기·매년 달라지며, 위 수치는 각 지급 시점 보도 기준입니다.
-    최신 지급률은 반드시 최근 뉴스로 다시 확인하세요.
-  </div>
-
-  <div class="cross-link-box">
-    📌 2026년 5월 신설된 <a href="samsung-special-bonus.html">DS부문 특별경영성과급</a>은 위 OPI·TAI와
-    별도로 지급되는 조건부 제도입니다. 지급 조건과 재원 규모를 확인해보세요.
+    ※ 세전 금액이며, 실제로는 상여소득세(OPI·TAI)와 자사주 평가차익 관련 세금(특별경영성과급)이 별도로
+    발생합니다. OPI·TAI 지급률은 사업부 실적에 따라 매 반기·매년 달라지고, 특별경영성과급은 개인별
+    배분 공식이 공개되지 않아 사업부 평균 추정치를 표시한 것으로 실제 개인 수령액과 다를 수 있습니다.
+    최신 수치는 반드시 최근 뉴스로 다시 확인하세요.
   </div>
   {FOOTER}
   <script>
+  const SPECIAL_MAN = {special_man};
+
   function calc() {{
     const annual = parseFloat(document.getElementById('annual').value) || 0;
     const monthlyInput = document.getElementById('monthly').value;
@@ -88,7 +101,7 @@ def samsung_page(div):
     const tai = Math.round(monthly * {div['tai_h1_rate']});
     document.getElementById('opi').textContent = opi.toLocaleString() + '만원';
     document.getElementById('tai').textContent = tai.toLocaleString() + '만원';
-    document.getElementById('total').textContent = (opi + tai).toLocaleString() + '만원';
+    document.getElementById('total').textContent = (opi + tai + SPECIAL_MAN).toLocaleString() + '만원';
   }}
   </script>
 </body>
@@ -186,8 +199,8 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     pages = []
 
-    # SAMSUNG_DIVISIONS에서 빠진 사업부의 예전 페이지 정리
-    valid_filenames = {f"samsung-{div['id']}.html" for div in SAMSUNG_DIVISIONS}
+    # SAMSUNG_DIVISIONS에서 빠진 사업부의 예전 페이지 정리 (특별경영성과급 안내 페이지는 별도 스크립트가 관리하므로 제외)
+    valid_filenames = {f"samsung-{div['id']}.html" for div in SAMSUNG_DIVISIONS} | {"samsung-special-bonus.html"}
     for fname in os.listdir(OUTPUT_DIR):
         if fname.startswith("samsung-") and fname.endswith(".html") and fname not in valid_filenames:
             os.remove(os.path.join(OUTPUT_DIR, fname))

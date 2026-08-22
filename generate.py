@@ -14,7 +14,81 @@ BASE_URL = "https://krcalctools.github.io"
 
 START = 20_000_000
 END = 100_000_000
-STEP = 500_000  # 데모용 50만원 단위. 실서비스는 10만원 단위로 줄이면 페이지 수가 8배로 늘어남
+STEP = 1_000_000  # 100만원 단위. 실제 검색 패턴(딱 떨어지는 숫자)에 맞추고 유사페이지 과다생성을 피함
+
+
+SALARY_CALC_JS = """
+const PENSION_RATE = 0.045, PENSION_CAP = 6370000, PENSION_FLOOR = 370000;
+const HEALTH_RATE = 0.03545, LTC_RATE_OF_HEALTH = 0.1295, EMPLOYMENT_RATE = 0.009;
+
+function earnedIncomeDeduction(g) {
+  if (g <= 5000000) return g * 0.7;
+  if (g <= 15000000) return 3500000 + (g - 5000000) * 0.4;
+  if (g <= 45000000) return 7500000 + (g - 15000000) * 0.15;
+  if (g <= 100000000) return 12000000 + (g - 45000000) * 0.05;
+  return 14750000 + (g - 100000000) * 0.02;
+}
+
+const TAX_BRACKETS = [
+  [12000000, 0.06, 0], [46000000, 0.15, 1080000], [88000000, 0.24, 5220000],
+  [150000000, 0.35, 14900000], [300000000, 0.38, 19400000], [500000000, 0.40, 25400000],
+  [1000000000, 0.42, 35400000], [Infinity, 0.45, 65400000],
+];
+
+function taxByBracket(base) {
+  if (base <= 0) return 0;
+  for (const [limit, rate, deduction] of TAX_BRACKETS) {
+    if (base <= limit) return base * rate - deduction;
+  }
+  return 0;
+}
+
+function earnedIncomeTaxCredit(tax, annual) {
+  let credit = tax <= 1300000 ? tax * 0.55 : 715000 + (tax - 1300000) * 0.3;
+  let cap;
+  if (annual <= 33000000) cap = 740000;
+  else if (annual <= 70000000) cap = Math.max(660000, 740000 - (annual - 33000000) * 0.008);
+  else cap = Math.max(500000, 660000 - (annual - 70000000) * 0.5);
+  return Math.min(credit, cap);
+}
+
+function calculateSalary(annual) {
+  const monthly = annual / 12;
+  const pensionBase = Math.min(Math.max(monthly, PENSION_FLOOR), PENSION_CAP);
+  const pension = Math.round(pensionBase * PENSION_RATE);
+  const health = Math.round(monthly * HEALTH_RATE);
+  const ltc = Math.round(health * LTC_RATE_OF_HEALTH);
+  const employment = Math.round(monthly * EMPLOYMENT_RATE);
+
+  const deduction = earnedIncomeDeduction(annual);
+  const earnedIncomeAmount = Math.max(annual - deduction, 0);
+  const comprehensiveDeduction = 1500000 + pension * 12 + (health + ltc) * 12;
+  const taxableBase = Math.max(earnedIncomeAmount - comprehensiveDeduction, 0);
+  const calculatedTax = taxByBracket(taxableBase);
+  const credit = earnedIncomeTaxCredit(calculatedTax, annual);
+  const finalTaxAnnual = Math.max(calculatedTax - credit, 0);
+
+  const incomeTax = Math.round(finalTaxAnnual / 12);
+  const localTax = Math.round(incomeTax * 0.1);
+  const totalDeduction = pension + health + ltc + employment + incomeTax + localTax;
+  const netMonthly = Math.round(monthly - totalDeduction);
+
+  return { pension, health, ltc, employment, incomeTax, localTax, netMonthly };
+}
+
+function calc() {
+  const manInput = parseFloat(document.getElementById('annual').value) || 0;
+  const annual = manInput * 10000;
+  if (annual <= 0) return;
+  const r = calculateSalary(annual);
+  document.getElementById('pension').textContent = r.pension.toLocaleString() + '원';
+  document.getElementById('health').textContent = r.health.toLocaleString() + '원';
+  document.getElementById('ltc').textContent = r.ltc.toLocaleString() + '원';
+  document.getElementById('employment').textContent = r.employment.toLocaleString() + '원';
+  document.getElementById('tax').textContent = (r.incomeTax + r.localTax).toLocaleString() + '원';
+  document.getElementById('net').textContent = r.netMonthly.toLocaleString() + '원';
+}
+"""
 
 
 def fmt(n):
@@ -132,6 +206,12 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     salaries = list(range(START, END + 1, STEP))
 
+    # START/END/STEP이 바뀌면 예전 값으로 만들어진 salary-*.html이 남을 수 있어 먼저 정리
+    valid_filenames = {f"{slug(s)}.html" for s in salaries}
+    for fname in os.listdir(OUTPUT_DIR):
+        if fname.startswith("salary-") and fname.endswith(".html") and fname not in valid_filenames:
+            os.remove(os.path.join(OUTPUT_DIR, fname))
+
     urls = []
     for i, salary in enumerate(salaries):
         prev_s = salaries[i - 1] if i > 0 else None
@@ -162,14 +242,42 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   body {{ font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; }}
+  .calc-box {{ background: #f7f7fb; border-radius: 12px; padding: 20px; margin: 20px 0; }}
+  .field {{ margin-bottom: 14px; }}
+  .field label {{ display: block; font-size: 13px; color: #555; margin-bottom: 4px; }}
+  .field input {{ width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; }}
+  .result {{ margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e2ea; }}
+  .result-row {{ display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }}
+  .result-row.total {{ font-weight: 700; font-size: 17px; color: #1958c9; border-top: 1px dashed #ccc; margin-top: 6px; padding-top: 10px; }}
   .footer-nav {{ margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; }}
   .footer-nav a {{ color: #666; margin-right: 12px; }}
 </style></head>
 <body>
-<h1>연봉별 실수령액 계산 결과 ({len(salaries)}개)</h1>
+<h1>연봉 실수령액 계산기</h1>
+<p>정확한 연봉을 입력하면 바로 계산됩니다. 아래 목록은 자주 찾는 연봉 구간별 상세 계산 결과입니다.</p>
+
+<div class="calc-box">
+  <div class="field">
+    <label for="annual">연봉 (세전, 만원)</label>
+    <input type="number" id="annual" placeholder="예: 3637" oninput="calc()">
+  </div>
+  <div class="result">
+    <div class="result-row"><span>국민연금</span><span id="pension">-</span></div>
+    <div class="result-row"><span>건강보험</span><span id="health">-</span></div>
+    <div class="result-row"><span>장기요양보험</span><span id="ltc">-</span></div>
+    <div class="result-row"><span>고용보험</span><span id="employment">-</span></div>
+    <div class="result-row"><span>소득세+지방소득세</span><span id="tax">-</span></div>
+    <div class="result-row total"><span>월 실수령액</span><span id="net">-</span></div>
+  </div>
+</div>
+
 <p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기</b></a> | <a href="severance.html"><b>퇴직금 계산기</b></a> | <a href="unemployment.html"><b>실업급여 계산기</b></a></p>
+<h2>연봉 구간별 상세 계산 결과 ({len(salaries)}개)</h2>
 <ul>{links}</ul>
 {FOOTER_NAV}
+<script>
+{SALARY_CALC_JS}
+</script>
 </body></html>"""
     with open(os.path.join(OUTPUT_DIR, "index.html"), "w", encoding="utf-8") as f:
         f.write(index_html)

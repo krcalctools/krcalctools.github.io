@@ -6,6 +6,7 @@ JS로 즉시 계산하는 방식(인터랙티브 계산기)으로 만든다.
 기존 salary-*.html 과 같은 docs/ 폴더에 생성되어 한 사이트에 통합된다.
 """
 import os
+import json
 from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEADER, FAVICON
 from bonus_data import (
     SAMSUNG_DIVISIONS, SAMSUNG_OPI_SOURCE, SAMSUNG_OPI_SOURCE_URL,
@@ -24,13 +25,22 @@ def fmt(n):
     return f"{n:,}"
 
 
-def samsung_page(div):
-    opi_pct = round(div["opi_rate"] * 100)
-    tai_pct = round(div["tai_h1_rate"] * 100)
-    special_man = div["special_bonus_man"]
-    special_eok = special_man / 10000
-    title = f"삼성전자 {div['short']} 성과급 통합 계산기 - OPI·TAI·특별경영성과급 2026"
-    desc = f"삼성전자 {div['name']}의 OPI·TAI·특별경영성과급까지 합산한 2026년 예상 총 성과급을 계산해보세요."
+def samsung_combined_page():
+    title = "삼성전자 DS부문 성과급 통합 계산기 - 메모리·시스템LSI·파운드리·공통 (OPI·TAI·특별경영성과급)"
+    desc = "사업부를 선택하면 OPI·TAI·특별경영성과급까지 합산한 2026년 예상 총 성과급을 바로 계산해드립니다."
+
+    options = "\n".join(f'<option value="{d["id"]}">{d["name"]}</option>' for d in SAMSUNG_DIVISIONS)
+    division_data = {
+        d["id"]: {
+            "name": d["name"],
+            "opiRate": d["opi_rate"],
+            "taiRate": d["tai_h1_rate"],
+            "specialMan": d["special_bonus_man"],
+            "specialNote": d["special_bonus_note"],
+        }
+        for d in SAMSUNG_DIVISIONS
+    }
+    division_data_json = json.dumps(division_data, ensure_ascii=False)
 
     return f"""<!doctype html>
 <html lang="ko">
@@ -45,10 +55,16 @@ def samsung_page(div):
 </head>
 <body>
 {SITE_HEADER}
-  <h1>삼성전자 {div['name']} 성과급 통합 계산기</h1>
-  <p>OPI(초과이익성과급)·TAI(목표달성장려금)·특별경영성과급까지 전부 합산한 예상 총 성과급을 계산합니다.</p>
+  <h1>삼성전자 DS부문 성과급 통합 계산기</h1>
+  <p>사업부를 선택하고 연봉·기본급을 입력하면 OPI·TAI·특별경영성과급까지 합산한 예상 총 성과급을 계산합니다.</p>
 
   <div class="calc-box">
+    <div class="field">
+      <label for="division">사업부 선택</label>
+      <select id="division" onchange="calc()">
+        {options}
+      </select>
+    </div>
     <div class="field">
       <label for="annual">연봉 (세전, 만원)</label>
       <input type="number" id="annual" placeholder="예: 6000" oninput="calc()">
@@ -59,19 +75,18 @@ def samsung_page(div):
     </div>
 
     <div class="result">
-      <div class="result-row"><span>OPI ({opi_pct}%, 연봉 기준)</span><span id="opi">-</span></div>
-      <div class="result-row"><span>TAI 상반기 ({tai_pct}%, 월기본급 기준)</span><span id="tai">-</span></div>
+      <div class="result-row"><span id="opiLabel">OPI</span><span id="opi">-</span></div>
+      <div class="result-row"><span id="taiLabel">TAI 상반기</span><span id="tai">-</span></div>
       <div class="result-row"><span>TAI 하반기</span><span class="pending">12월 말 발표 예정 (미정)</span></div>
-      <div class="result-row"><span>특별경영성과급 (2026년 첫 지급분, 1인당 추정)</span><span>{fmt(special_man)}만원 (약 {special_eok:g}억원)</span></div>
+      <div class="result-row"><span>특별경영성과급 (2026년 첫 지급분, 1인당 추정)</span><span id="special">-</span></div>
       <div class="result-row total"><span>예상 총 성과급 합계 (세전)</span><span id="total">-</span></div>
     </div>
-    <p class="stock-note">※ 특별경영성과급은 연봉과 무관하게 보도된 1인당 평균 추정치를 그대로 더한 값입니다.
-    {div['special_bonus_note']}</p>
+    <p class="stock-note" id="specialNote">※ 특별경영성과급은 연봉과 무관하게 보도된 1인당 평균 추정치를 그대로 더한 값입니다.</p>
   </div>
 
   <h2>계산 기준</h2>
-  <p>OPI = 연봉 × {opi_pct}%<br>TAI(상반기) = 월 기본급 × {tai_pct}%<br>
-  특별경영성과급 = 사업부 평균 추정치 {fmt(special_man)}만원 (연봉 무관 고정값)</p>
+  <p>OPI = 연봉 × 사업부 OPI 지급률<br>TAI(상반기) = 월 기본급 × 사업부 TAI 지급률<br>
+  특별경영성과급 = 사업부 평균 추정치 (연봉 무관 고정값)</p>
   <p class="source">OPI 지급률 출처: {SAMSUNG_OPI_SOURCE} — <a href="{SAMSUNG_OPI_SOURCE_URL}" target="_blank" rel="noopener nofollow">기사 보기</a></p>
   <p class="source">TAI 지급률 출처: {SAMSUNG_TAI_H1_SOURCE} — <a href="{SAMSUNG_TAI_H1_SOURCE_URL}" target="_blank" rel="noopener nofollow">기사 보기</a></p>
   <p class="source">특별경영성과급 출처: {SPECIAL_BONUS_SOURCE} — <a href="{SPECIAL_BONUS_SOURCE_URL}" target="_blank" rel="noopener nofollow">기사 보기</a>
@@ -91,18 +106,28 @@ def samsung_page(div):
   </div>
   {FOOTER}
   <script>
-  const SPECIAL_MAN = {special_man};
+  const DIVISIONS = {division_data_json};
 
   function calc() {{
+    const divId = document.getElementById('division').value;
+    const div = DIVISIONS[divId];
+    if (!div) return;
+
     const annual = parseFloat(document.getElementById('annual').value) || 0;
     const monthlyInput = document.getElementById('monthly').value;
     const monthly = monthlyInput ? parseFloat(monthlyInput) : annual / 12;
-    const opi = Math.round(annual * {div['opi_rate']});
-    const tai = Math.round(monthly * {div['tai_h1_rate']});
+    const opi = Math.round(annual * div.opiRate);
+    const tai = Math.round(monthly * div.taiRate);
+
+    document.getElementById('opiLabel').textContent = 'OPI (' + Math.round(div.opiRate * 100) + '%, 연봉 기준)';
+    document.getElementById('taiLabel').textContent = 'TAI 상반기 (' + Math.round(div.taiRate * 100) + '%, 월기본급 기준)';
     document.getElementById('opi').textContent = opi.toLocaleString() + '만원';
     document.getElementById('tai').textContent = tai.toLocaleString() + '만원';
-    document.getElementById('total').textContent = (opi + tai + SPECIAL_MAN).toLocaleString() + '만원';
+    document.getElementById('special').textContent = div.specialMan.toLocaleString() + '만원 (약 ' + (div.specialMan / 10000) + '억원)';
+    document.getElementById('specialNote').textContent = '※ 특별경영성과급은 연봉과 무관하게 보도된 1인당 평균 추정치를 그대로 더한 값입니다. ' + div.specialNote;
+    document.getElementById('total').textContent = (opi + tai + div.specialMan).toLocaleString() + '만원';
   }}
+  window.onload = calc;
   </script>
 </body>
 </html>"""
@@ -199,17 +224,16 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     pages = []
 
-    # SAMSUNG_DIVISIONS에서 빠진 사업부의 예전 페이지 정리 (특별경영성과급 안내 페이지는 별도 스크립트가 관리하므로 제외)
-    valid_filenames = {f"samsung-{div['id']}.html" for div in SAMSUNG_DIVISIONS} | {"samsung-special-bonus.html"}
+    # 사업부별 개별 페이지(구버전)가 남아있으면 정리 (특별경영성과급 안내 페이지와 통합 계산기는 제외)
+    valid_filenames = {"samsung-special-bonus.html", "samsung-bonus.html"}
     for fname in os.listdir(OUTPUT_DIR):
         if fname.startswith("samsung-") and fname.endswith(".html") and fname not in valid_filenames:
             os.remove(os.path.join(OUTPUT_DIR, fname))
 
-    for div in SAMSUNG_DIVISIONS:
-        filename = f"samsung-{div['id']}.html"
-        with open(os.path.join(OUTPUT_DIR, filename), "w", encoding="utf-8") as f:
-            f.write(samsung_page(div))
-        pages.append({"file": filename, "label": f"삼성전자 {div['name']} 성과급 계산기"})
+    samsung_filename = "samsung-bonus.html"
+    with open(os.path.join(OUTPUT_DIR, samsung_filename), "w", encoding="utf-8") as f:
+        f.write(samsung_combined_page())
+    pages.append({"file": samsung_filename, "label": "삼성전자 DS부문 성과급 통합 계산기 (사업부 선택)"})
 
     skhynix_filename = "skhynix.html"
     with open(os.path.join(OUTPUT_DIR, skhynix_filename), "w", encoding="utf-8") as f:

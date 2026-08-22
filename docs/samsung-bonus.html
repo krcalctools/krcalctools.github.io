@@ -13,8 +13,8 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5607384951754093"
      crossorigin="anonymous"></script>
 <meta charset="utf-8">
-<title>삼성전자 파운드리 성과급 통합 계산기 - OPI·TAI·특별경영성과급 2026</title>
-<meta name="description" content="삼성전자 DS부문 - 파운드리사업부의 OPI·TAI·특별경영성과급까지 합산한 2026년 예상 총 성과급을 계산해보세요.">
+<title>삼성전자 DS부문 성과급 통합 계산기 - 메모리·시스템LSI·파운드리·공통 (OPI·TAI·특별경영성과급)</title>
+<meta name="description" content="사업부를 선택하면 OPI·TAI·특별경영성과급까지 합산한 2026년 예상 총 성과급을 바로 계산해드립니다.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%A7%AE%3C/text%3E%3C/svg%3E">
 <style>
@@ -155,10 +155,19 @@
     </nav>
   </header>
 
-  <h1>삼성전자 DS부문 - 파운드리사업부 성과급 통합 계산기</h1>
-  <p>OPI(초과이익성과급)·TAI(목표달성장려금)·특별경영성과급까지 전부 합산한 예상 총 성과급을 계산합니다.</p>
+  <h1>삼성전자 DS부문 성과급 통합 계산기</h1>
+  <p>사업부를 선택하고 연봉·기본급을 입력하면 OPI·TAI·특별경영성과급까지 합산한 예상 총 성과급을 계산합니다.</p>
 
   <div class="calc-box">
+    <div class="field">
+      <label for="division">사업부 선택</label>
+      <select id="division" onchange="calc()">
+        <option value="ds-memory">DS부문 - 메모리사업부</option>
+<option value="ds-systemlsi">DS부문 - 시스템LSI사업부</option>
+<option value="ds-foundry">DS부문 - 파운드리사업부</option>
+<option value="ds-common">DS부문 공통(지원조직)</option>
+      </select>
+    </div>
     <div class="field">
       <label for="annual">연봉 (세전, 만원)</label>
       <input type="number" id="annual" placeholder="예: 6000" oninput="calc()">
@@ -169,19 +178,18 @@
     </div>
 
     <div class="result">
-      <div class="result-row"><span>OPI (47%, 연봉 기준)</span><span id="opi">-</span></div>
-      <div class="result-row"><span>TAI 상반기 (75%, 월기본급 기준)</span><span id="tai">-</span></div>
+      <div class="result-row"><span id="opiLabel">OPI</span><span id="opi">-</span></div>
+      <div class="result-row"><span id="taiLabel">TAI 상반기</span><span id="tai">-</span></div>
       <div class="result-row"><span>TAI 하반기</span><span class="pending">12월 말 발표 예정 (미정)</span></div>
-      <div class="result-row"><span>특별경영성과급 (2026년 첫 지급분, 1인당 추정)</span><span>16,000만원 (약 1.6억원)</span></div>
+      <div class="result-row"><span>특별경영성과급 (2026년 첫 지급분, 1인당 추정)</span><span id="special">-</span></div>
       <div class="result-row total"><span>예상 총 성과급 합계 (세전)</span><span id="total">-</span></div>
     </div>
-    <p class="stock-note">※ 특별경영성과급은 연봉과 무관하게 보도된 1인당 평균 추정치를 그대로 더한 값입니다.
-    2026년 적자 예상으로 기본 배분(1.6억원)만 보장. 시스템LSI·파운드리는 별도 수치가 보도되지 않아 동일하게 적용</p>
+    <p class="stock-note" id="specialNote">※ 특별경영성과급은 연봉과 무관하게 보도된 1인당 평균 추정치를 그대로 더한 값입니다.</p>
   </div>
 
   <h2>계산 기준</h2>
-  <p>OPI = 연봉 × 47%<br>TAI(상반기) = 월 기본급 × 75%<br>
-  특별경영성과급 = 사업부 평균 추정치 16,000만원 (연봉 무관 고정값)</p>
+  <p>OPI = 연봉 × 사업부 OPI 지급률<br>TAI(상반기) = 월 기본급 × 사업부 TAI 지급률<br>
+  특별경영성과급 = 사업부 평균 추정치 (연봉 무관 고정값)</p>
   <p class="source">OPI 지급률 출처: 2025년 귀속 실적 기준 (2026년 1월 확정, 1월 말 지급) — <a href="https://dealsite.co.kr/articles/155212" target="_blank" rel="noopener nofollow">기사 보기</a></p>
   <p class="source">TAI 지급률 출처: 2026년 상반기 확정 (2026년 7월 8일 지급). 하반기는 12월 말 별도 발표 예정으로 아직 미정 — <a href="https://zdnet.co.kr/view/?no=20260706154914" target="_blank" rel="noopener nofollow">기사 보기</a></p>
   <p class="source">특별경영성과급 출처: 2026년 5월 노사 잠정합의·노조 투표 가결(찬성률 73.7%) 기준 보도된 1인당 추정 수령액 — <a href="https://www.hankyung.com/amp/2026052102857" target="_blank" rel="noopener nofollow">기사 보기</a>
@@ -212,18 +220,28 @@
   </div>
 
   <script>
-  const SPECIAL_MAN = 16000;
+  const DIVISIONS = {"ds-memory": {"name": "DS부문 - 메모리사업부", "opiRate": 0.47, "taiRate": 1.0, "specialMan": 60000, "specialNote": "기본 배분 1.6억원 + 메모리사업부 추가배분. 언론사별로 5.4억~6억원까지 편차 있음"}, "ds-systemlsi": {"name": "DS부문 - 시스템LSI사업부", "opiRate": 0.47, "taiRate": 0.75, "specialMan": 16000, "specialNote": "2026년 적자 예상으로 기본 배분(1.6억원)만 보장. 시스템LSI·파운드리는 별도 수치가 보도되지 않아 동일하게 적용"}, "ds-foundry": {"name": "DS부문 - 파운드리사업부", "opiRate": 0.47, "taiRate": 0.75, "specialMan": 16000, "specialNote": "2026년 적자 예상으로 기본 배분(1.6억원)만 보장. 시스템LSI·파운드리는 별도 수치가 보도되지 않아 동일하게 적용"}, "ds-common": {"name": "DS부문 공통(지원조직)", "opiRate": 0.47, "taiRate": 1.0, "specialMan": 43000, "specialNote": "기본 배분 1.6억원 + 공통조직 추가배분(메모리 대비 0.7배 비율) 약 2.7억원"}};
 
   function calc() {
+    const divId = document.getElementById('division').value;
+    const div = DIVISIONS[divId];
+    if (!div) return;
+
     const annual = parseFloat(document.getElementById('annual').value) || 0;
     const monthlyInput = document.getElementById('monthly').value;
     const monthly = monthlyInput ? parseFloat(monthlyInput) : annual / 12;
-    const opi = Math.round(annual * 0.47);
-    const tai = Math.round(monthly * 0.75);
+    const opi = Math.round(annual * div.opiRate);
+    const tai = Math.round(monthly * div.taiRate);
+
+    document.getElementById('opiLabel').textContent = 'OPI (' + Math.round(div.opiRate * 100) + '%, 연봉 기준)';
+    document.getElementById('taiLabel').textContent = 'TAI 상반기 (' + Math.round(div.taiRate * 100) + '%, 월기본급 기준)';
     document.getElementById('opi').textContent = opi.toLocaleString() + '만원';
     document.getElementById('tai').textContent = tai.toLocaleString() + '만원';
-    document.getElementById('total').textContent = (opi + tai + SPECIAL_MAN).toLocaleString() + '만원';
+    document.getElementById('special').textContent = div.specialMan.toLocaleString() + '만원 (약 ' + (div.specialMan / 10000) + '억원)';
+    document.getElementById('specialNote').textContent = '※ 특별경영성과급은 연봉과 무관하게 보도된 1인당 평균 추정치를 그대로 더한 값입니다. ' + div.specialNote;
+    document.getElementById('total').textContent = (opi + tai + div.specialMan).toLocaleString() + '만원';
   }
+  window.onload = calc;
   </script>
 </body>
 </html>

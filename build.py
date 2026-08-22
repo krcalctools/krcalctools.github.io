@@ -5,6 +5,7 @@
 import os
 import generate
 import generate_bonus
+import generate_severance
 
 OUTPUT_DIR = generate.OUTPUT_DIR
 BASE_URL = generate.BASE_URL
@@ -29,6 +30,7 @@ def build_sitemap():
 def main():
     generate.main()
     generate_bonus.main()
+    generate_severance.main()
     build_sitemap()
 
 

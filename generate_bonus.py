@@ -6,7 +6,7 @@ JS로 즉시 계산하는 방식(인터랙티브 계산기)으로 만든다.
 기존 salary-*.html 과 같은 docs/ 폴더에 생성되어 한 사이트에 통합된다.
 """
 import os
-from static_pages import SITE_NAME, GA_SNIPPET
+from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV
 from bonus_data import (
     SAMSUNG_DIVISIONS, SAMSUNG_OPI_SOURCE, SAMSUNG_OPI_SOURCE_URL,
     SAMSUNG_TAI_H1_SOURCE, SAMSUNG_TAI_H1_SOURCE_URL,
@@ -36,15 +36,7 @@ STYLE = """
   .division-list { margin: 16px 0; padding-left: 20px; font-size: 14px; }
 """
 
-FOOTER = """
-  <div class="footer-nav">
-    <a href="index.html">전체 목록</a>
-    <a href="bonus-index.html">성과급 계산기 모음</a>
-    <a href="about.html">사이트 소개</a>
-    <a href="privacy.html">개인정보처리방침</a>
-    <a href="contact.html">문의</a>
-  </div>
-"""
+FOOTER = FOOTER_NAV
 
 
 def samsung_page(div):

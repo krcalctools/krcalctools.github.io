@@ -14,6 +14,17 @@ GA_SNIPPET = """<!-- Google tag (gtag.js) -->
   gtag('config', 'G-HKGC6LX6C4');
 </script>"""
 
+FOOTER_NAV = """
+  <div class="footer-nav">
+    <a href="index.html">연봉 실수령액</a>
+    <a href="bonus-index.html">성과급 계산기</a>
+    <a href="severance.html">퇴직금 계산기</a>
+    <a href="about.html">사이트 소개</a>
+    <a href="privacy.html">개인정보처리방침</a>
+    <a href="contact.html">문의</a>
+  </div>
+"""
+
 STYLE = """
   body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.7; }
   h1 { font-size: 22px; }
@@ -47,11 +58,7 @@ def about_html():
   <p>정확한 원천징수 세액은 국세청 홈택스 또는 재직 중인 회사의 급여 담당 부서를 통해 확인하시기
   바랍니다. 본 사이트의 계산 결과는 참고용 추정치입니다.</p>
 
-  <div class="footer-nav">
-    <a href="index.html">전체 목록</a>
-    <a href="privacy.html">개인정보처리방침</a>
-    <a href="contact.html">문의</a>
-  </div>
+{FOOTER_NAV}
 </body>
 </html>"""
 
@@ -94,11 +101,7 @@ def privacy_html():
   <h2>5. 시행일</h2>
   <p>본 방침은 2026년 8월 22일부터 적용됩니다.</p>
 
-  <div class="footer-nav">
-    <a href="index.html">전체 목록</a>
-    <a href="about.html">사이트 소개</a>
-    <a href="contact.html">문의</a>
-  </div>
+{FOOTER_NAV}
 </body>
 </html>"""
 
@@ -118,10 +121,6 @@ def contact_html():
   <p>사이트 이용 중 궁금한 점, 오류 제보, 광고/제휴 문의는 아래 이메일로 연락 주시기 바랍니다.</p>
   <p><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></p>
 
-  <div class="footer-nav">
-    <a href="index.html">전체 목록</a>
-    <a href="about.html">사이트 소개</a>
-    <a href="privacy.html">개인정보처리방침</a>
-  </div>
+{FOOTER_NAV}
 </body>
 </html>"""

@@ -7,7 +7,7 @@ STEP/START/END 만 조절하면 페이지 수가 그대로 늘어난다.
 """
 import os
 from calc import calculate
-from static_pages import about_html, privacy_html, contact_html, SITE_NAME, GA_SNIPPET
+from static_pages import about_html, privacy_html, contact_html, SITE_NAME, GA_SNIPPET, FOOTER_NAV
 
 OUTPUT_DIR = "docs"  # GitHub Pages가 /docs 폴더를 바로 서빙할 수 있어서 이 이름 사용
 BASE_URL = "https://krcalctools.github.io"
@@ -123,12 +123,7 @@ def page_html(salary, prev_salary, next_salary):
     정확한 금액은 국세청 홈택스 원천징수세액 조회를 참고하세요.
   </div>
 
-  <div class="footer-nav">
-    <a href="index.html">전체 목록</a>
-    <a href="about.html">사이트 소개</a>
-    <a href="privacy.html">개인정보처리방침</a>
-    <a href="contact.html">문의</a>
-  </div>
+{FOOTER_NAV}
 </body>
 </html>"""
 
@@ -163,12 +158,18 @@ def main():
 {GA_SNIPPET}
 <meta charset="utf-8"><title>{SITE_NAME} - 연봉별 실수령액 계산 결과</title>
 <meta name="google-site-verification" content="22jd1Q9gwpfGcwd0MvSlxlhC8mekAJ9CjNMXHGUHASE" />
-<meta name="naver-site-verification" content="2619bf9b6ab4ed06c679f8f24d5b50df019827ac" /></head>
+<meta name="naver-site-verification" content="2619bf9b6ab4ed06c679f8f24d5b50df019827ac" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {{ font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; }}
+  .footer-nav {{ margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; }}
+  .footer-nav a {{ color: #666; margin-right: 12px; }}
+</style></head>
 <body>
 <h1>연봉별 실수령액 계산 결과 ({len(salaries)}개)</h1>
-<p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기 바로가기</b></a></p>
-<p><a href="about.html">사이트 소개</a> | <a href="privacy.html">개인정보처리방침</a> | <a href="contact.html">문의</a></p>
+<p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기</b></a> | <a href="severance.html"><b>퇴직금 계산기</b></a></p>
 <ul>{links}</ul>
+{FOOTER_NAV}
 </body></html>"""
     with open(os.path.join(OUTPUT_DIR, "index.html"), "w", encoding="utf-8") as f:
         f.write(index_html)

@@ -73,6 +73,11 @@ def samsung_page(div):
     지급률은 사업부 실적에 따라 매 반기·매년 달라지며, 위 수치는 각 지급 시점 보도 기준입니다.
     최신 지급률은 반드시 최근 뉴스로 다시 확인하세요.
   </div>
+
+  <div class="cross-link-box">
+    📌 2026년 5월 신설된 <a href="samsung-special-bonus.html">DS부문 특별경영성과급</a>은 위 OPI·TAI와
+    별도로 지급되는 조건부 제도입니다. 지급 조건과 재원 규모를 확인해보세요.
+  </div>
   {FOOTER}
   <script>
   function calc() {{
@@ -197,6 +202,8 @@ def main():
     with open(os.path.join(OUTPUT_DIR, skhynix_filename), "w", encoding="utf-8") as f:
         f.write(skhynix_page())
     pages.append({"file": skhynix_filename, "label": "SK하이닉스 성과급 계산기"})
+
+    pages.append({"file": "samsung-special-bonus.html", "label": "📌 삼성전자 DS부문 특별경영성과급 (2026년 신설)"})
 
     with open(os.path.join(OUTPUT_DIR, "bonus-index.html"), "w", encoding="utf-8") as f:
         f.write(bonus_index_html(pages))

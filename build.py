@@ -8,6 +8,7 @@ import generate_bonus
 import generate_severance
 import generate_unemployment
 import generate_dividend
+import generate_special_bonus
 from static_pages import ADSENSE_CLIENT
 
 OUTPUT_DIR = generate.OUTPUT_DIR
@@ -44,6 +45,7 @@ def main():
     generate_severance.main()
     generate_unemployment.main()
     generate_dividend.main()
+    generate_special_bonus.main()
     build_ads_txt()
     build_sitemap()
 

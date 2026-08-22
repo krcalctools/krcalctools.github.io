@@ -5,14 +5,19 @@
 SITE_NAME = "연봉실수령액계산기"
 CONTACT_EMAIL = "contact@yourdomain.com"  # 실배포 전 실제 연락처 이메일로 교체하세요
 
-GA_SNIPPET = """<!-- Google tag (gtag.js) -->
+ADSENSE_CLIENT = "ca-pub-5607384951754093"
+
+GA_SNIPPET = f"""<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HKGC6LX6C4"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag(){{dataLayer.push(arguments);}}
   gtag('js', new Date());
   gtag('config', 'G-HKGC6LX6C4');
-</script>"""
+</script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ADSENSE_CLIENT}"
+     crossorigin="anonymous"></script>"""
 
 FOOTER_NAV = """
   <div class="footer-nav">

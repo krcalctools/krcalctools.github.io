@@ -85,7 +85,7 @@ function calculateSalary(annual) {
   const totalDeduction = pension + health + ltc + employment + incomeTax + localTax;
   const netMonthly = Math.round(monthly - totalDeduction);
 
-  return { pension, health, ltc, employment, incomeTax, localTax, netMonthly };
+  return { pension, health, ltc, employment, incomeTax, localTax, netMonthly, totalDeduction, monthly };
 }
 
 function calc() {
@@ -103,6 +103,18 @@ function calc() {
   const topPct = estimateTopPercent(manInput);
   document.getElementById('percentile').textContent = '상위 ' + topPct + '%';
   document.getElementById('percentileBadge').style.display = 'block';
+
+  const netPct = Math.round((r.netMonthly / r.monthly) * 1000) / 10;
+  document.getElementById('donutChart').style.setProperty('--pct', netPct);
+  document.getElementById('donutPct').textContent = netPct + '%';
+  document.getElementById('donutNetLabel').textContent = '실수령액 ' + r.netMonthly.toLocaleString() + '원 (' + netPct + '%)';
+  document.getElementById('donutDeductionLabel').textContent = '공제액 ' + r.totalDeduction.toLocaleString() + '원 (' + (Math.round((100 - netPct) * 10) / 10) + '%)';
+  document.getElementById('donutWrap').style.display = 'flex';
+
+  const monthlyMan = Math.round(annual / 12 / 10000);
+  document.getElementById('severanceLink').href = 'severance.html?monthly=' + monthlyMan;
+  document.getElementById('unemploymentLink').href = 'unemployment.html?monthly=' + monthlyMan;
+  document.getElementById('crossLinkBox').style.display = 'block';
 }
 
 function estimateTopPercent(annualMan) {
@@ -147,6 +159,8 @@ def page_html(salary, prev_salary, next_salary):
     man = salary // 10_000
     label = fmt_eok(salary)
     top_pct = estimate_top_percent(man)
+    net_pct = round(r['net_monthly'] / r['gross_monthly'] * 100, 1)
+    monthly_man = round(salary / 12 / 10_000)
     title = f"연봉 {label} 실수령액 - 월 {fmt(r['net_monthly'])}원 (2025년 기준)"
     desc = f"연봉 {label}의 세후 실수령액은 월 약 {fmt(r['net_monthly'])}원입니다. 4대보험, 소득세 공제 내역과 소득 순위를 확인하세요."
 
@@ -182,6 +196,19 @@ def page_html(salary, prev_salary, next_salary):
     <span class="percentile-source">({PERCENTILE_SOURCE_NOTE})</span>
   </div>
 
+  <div class="donut-wrap">
+    <div class="donut-chart" style="--pct: {net_pct}">
+      <div class="donut-center">
+        <div class="donut-pct">{net_pct}%</div>
+        <div class="donut-label">실수령 비율</div>
+      </div>
+    </div>
+    <div class="donut-legend">
+      <div><span class="dot net"></span>실수령액 {fmt(r['net_monthly'])}원 ({net_pct}%)</div>
+      <div><span class="dot deduction"></span>공제액 {fmt(r['total_deduction'])}원 ({round(100 - net_pct, 1)}%)</div>
+    </div>
+  </div>
+
   <table>
     <tr><th>항목</th><th>월 공제액</th></tr>
     <tr><td>국민연금</td><td>{fmt(r['pension'])}원</td></tr>
@@ -192,6 +219,12 @@ def page_html(salary, prev_salary, next_salary):
     <tr><td>지방소득세</td><td>{fmt(r['local_tax'])}원</td></tr>
     <tr><th>공제 합계</th><th>{fmt(r['total_deduction'])}원</th></tr>
   </table>
+
+  <div class="cross-link-box">
+    이 월급여(약 {fmt(monthly_man)}만원) 기준으로 다른 계산도 해보세요:
+    <a href="severance.html?monthly={monthly_man}">🔗 퇴직금 계산기</a> ·
+    <a href="unemployment.html?monthly={monthly_man}">🔗 실업급여 계산기</a>
+  </div>
 
   <div class="nav">{nav_html}</div>
 
@@ -297,6 +330,23 @@ def main():
   <div class="percentile-badge" id="percentileBadge" style="display:none">
     💡 이 연봉은 대한민국 근로소득자 중 <b><span id="percentile">-</span></b>에 해당하는 것으로 추정됩니다.
     <span class="percentile-source">({PERCENTILE_SOURCE_NOTE})</span>
+  </div>
+  <div class="donut-wrap" id="donutWrap" style="display:none">
+    <div class="donut-chart" id="donutChart">
+      <div class="donut-center">
+        <div class="donut-pct" id="donutPct">-</div>
+        <div class="donut-label">실수령 비율</div>
+      </div>
+    </div>
+    <div class="donut-legend">
+      <div><span class="dot net"></span><span id="donutNetLabel">-</span></div>
+      <div><span class="dot deduction"></span><span id="donutDeductionLabel">-</span></div>
+    </div>
+  </div>
+  <div class="cross-link-box" id="crossLinkBox" style="display:none">
+    이 월급여 기준으로 다른 계산도 해보세요:
+    <a id="severanceLink" href="severance.html">🔗 퇴직금 계산기</a> ·
+    <a id="unemploymentLink" href="unemployment.html">🔗 실업급여 계산기</a>
   </div>
 </div>
 

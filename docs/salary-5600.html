@@ -76,6 +76,30 @@
   .percentile-badge b { color: #92400e; }
   .percentile-source { display: block; margin-top: 4px; font-size: 11px; color: #a16207; }
 
+  .donut-wrap { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; margin: 20px 0; }
+  .donut-chart {
+    width: 140px; height: 140px; border-radius: 50%; flex-shrink: 0;
+    background: conic-gradient(var(--primary) calc(var(--pct) * 1%), #e5e7eb 0);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .donut-center {
+    width: 100px; height: 100px; border-radius: 50%; background: var(--card-bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .donut-pct { font-size: 22px; font-weight: 800; color: var(--primary); }
+  .donut-label { font-size: 11px; color: var(--muted); }
+  .donut-legend { font-size: 13px; }
+  .donut-legend div { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+  .donut-legend .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .donut-legend .dot.net { background: var(--primary); }
+  .donut-legend .dot.deduction { background: #e5e7eb; }
+
+  .cross-link-box {
+    margin: 20px 0; padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0;
+    border-radius: 10px; font-size: 14px;
+  }
+  .cross-link-box a { font-weight: 600; }
+
   table.rule, table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
   table.rule th, table.rule td, table th, table td { border: 1px solid var(--border); padding: 9px 10px; text-align: left; }
   table.rule td.num, table td.num { text-align: right; }
@@ -141,6 +165,19 @@
     <span class="percentile-source">(2024년 귀속 국세청 근로소득 백분위 자료 기준(주요 구간 실측, 나머지는 2021년 분포 형태로 보간))</span>
   </div>
 
+  <div class="donut-wrap">
+    <div class="donut-chart" style="--pct: 83.1">
+      <div class="donut-center">
+        <div class="donut-pct">83.1%</div>
+        <div class="donut-label">실수령 비율</div>
+      </div>
+    </div>
+    <div class="donut-legend">
+      <div><span class="dot net"></span>실수령액 3,875,979원 (83.1%)</div>
+      <div><span class="dot deduction"></span>공제액 790,688원 (16.9%)</div>
+    </div>
+  </div>
+
   <table>
     <tr><th>항목</th><th>월 공제액</th></tr>
     <tr><td>국민연금</td><td>210,000원</td></tr>
@@ -151,6 +188,12 @@
     <tr><td>지방소득세</td><td>31,985원</td></tr>
     <tr><th>공제 합계</th><th>790,688원</th></tr>
   </table>
+
+  <div class="cross-link-box">
+    이 월급여(약 467만원) 기준으로 다른 계산도 해보세요:
+    <a href="severance.html?monthly=467">🔗 퇴직금 계산기</a> ·
+    <a href="unemployment.html?monthly=467">🔗 실업급여 계산기</a>
+  </div>
 
   <div class="nav"><a href="salary-5500.html">← 연봉 5,500만원</a> | <a href="salary-5700.html">연봉 5,700만원 →</a></div>
 

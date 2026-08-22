@@ -99,6 +99,15 @@ def severance_html():
 
     document.getElementById('warning').style.display = days < 365 ? 'block' : 'none';
   }}
+
+  window.addEventListener('DOMContentLoaded', function() {{
+    const params = new URLSearchParams(window.location.search);
+    const monthly = params.get('monthly');
+    if (monthly) {{
+      document.getElementById('monthly').value = monthly;
+      calc();
+    }}
+  }});
   </script>
 </body>
 </html>"""

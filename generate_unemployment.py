@@ -126,6 +126,15 @@ def unemployment_html():
     document.getElementById('daily').textContent = dailyBenefit.toLocaleString() + '원';
     document.getElementById('total').textContent = total.toLocaleString() + '원';
   }}
+
+  window.addEventListener('DOMContentLoaded', function() {{
+    const params = new URLSearchParams(window.location.search);
+    const monthly = params.get('monthly');
+    if (monthly) {{
+      document.getElementById('monthly').value = monthly;
+      calc();
+    }}
+  }});
   </script>
 </body>
 </html>"""

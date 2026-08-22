@@ -106,6 +106,30 @@ SITE_STYLE = """
   .percentile-badge b { color: #92400e; }
   .percentile-source { display: block; margin-top: 4px; font-size: 11px; color: #a16207; }
 
+  .donut-wrap { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; margin: 20px 0; }
+  .donut-chart {
+    width: 140px; height: 140px; border-radius: 50%; flex-shrink: 0;
+    background: conic-gradient(var(--primary) calc(var(--pct) * 1%), #e5e7eb 0);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .donut-center {
+    width: 100px; height: 100px; border-radius: 50%; background: var(--card-bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .donut-pct { font-size: 22px; font-weight: 800; color: var(--primary); }
+  .donut-label { font-size: 11px; color: var(--muted); }
+  .donut-legend { font-size: 13px; }
+  .donut-legend div { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+  .donut-legend .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .donut-legend .dot.net { background: var(--primary); }
+  .donut-legend .dot.deduction { background: #e5e7eb; }
+
+  .cross-link-box {
+    margin: 20px 0; padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0;
+    border-radius: 10px; font-size: 14px;
+  }
+  .cross-link-box a { font-weight: 600; }
+
   table.rule, table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
   table.rule th, table.rule td, table th, table td { border: 1px solid var(--border); padding: 9px 10px; text-align: left; }
   table.rule td.num, table td.num { text-align: right; }

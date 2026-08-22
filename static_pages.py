@@ -5,6 +5,15 @@
 SITE_NAME = "연봉실수령액계산기"
 CONTACT_EMAIL = "contact@yourdomain.com"  # 실배포 전 실제 연락처 이메일로 교체하세요
 
+GA_SNIPPET = """<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HKGC6LX6C4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HKGC6LX6C4');
+</script>"""
+
 STYLE = """
   body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.7; }
   h1 { font-size: 22px; }
@@ -18,6 +27,7 @@ def about_html():
     return f"""<!doctype html>
 <html lang="ko">
 <head>
+{GA_SNIPPET}
 <meta charset="utf-8">
 <title>사이트 소개 - {SITE_NAME}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,6 +60,7 @@ def privacy_html():
     return f"""<!doctype html>
 <html lang="ko">
 <head>
+{GA_SNIPPET}
 <meta charset="utf-8">
 <title>개인정보처리방침 - {SITE_NAME}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -96,6 +107,7 @@ def contact_html():
     return f"""<!doctype html>
 <html lang="ko">
 <head>
+{GA_SNIPPET}
 <meta charset="utf-8">
 <title>문의 - {SITE_NAME}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">

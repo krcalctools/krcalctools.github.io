@@ -6,7 +6,7 @@ JS로 즉시 계산하는 방식(인터랙티브 계산기)으로 만든다.
 기존 salary-*.html 과 같은 docs/ 폴더에 생성되어 한 사이트에 통합된다.
 """
 import os
-from static_pages import SITE_NAME
+from static_pages import SITE_NAME, GA_SNIPPET
 from bonus_data import (
     SAMSUNG_DIVISIONS, SAMSUNG_OPI_SOURCE, SAMSUNG_OPI_SOURCE_URL,
     SAMSUNG_TAI_H1_SOURCE, SAMSUNG_TAI_H1_SOURCE_URL,
@@ -56,6 +56,7 @@ def samsung_page(div):
     return f"""<!doctype html>
 <html lang="ko">
 <head>
+{GA_SNIPPET}
 <meta charset="utf-8">
 <title>{title}</title>
 <meta name="description" content="{desc}">
@@ -124,6 +125,7 @@ def skhynix_page():
     return f"""<!doctype html>
 <html lang="ko">
 <head>
+{GA_SNIPPET}
 <meta charset="utf-8">
 <title>{title}</title>
 <meta name="description" content="{desc}">
@@ -184,7 +186,9 @@ def bonus_index_html(pages):
     items = "\n".join(f'<li><a href="{p["file"]}">{p["label"]}</a></li>' for p in pages)
     return f"""<!doctype html>
 <html lang="ko">
-<head><meta charset="utf-8"><title>성과급 계산기 모음 - {SITE_NAME}</title>
+<head>
+{GA_SNIPPET}
+<meta charset="utf-8"><title>성과급 계산기 모음 - {SITE_NAME}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>{STYLE}</style></head>
 <body>

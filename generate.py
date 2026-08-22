@@ -7,7 +7,7 @@ STEP/START/END 만 조절하면 페이지 수가 그대로 늘어난다.
 """
 import os
 from calc import calculate
-from static_pages import about_html, privacy_html, contact_html, SITE_NAME
+from static_pages import about_html, privacy_html, contact_html, SITE_NAME, GA_SNIPPET
 
 OUTPUT_DIR = "docs"  # GitHub Pages가 /docs 폴더를 바로 서빙할 수 있어서 이 이름 사용
 BASE_URL = "https://krcalctools.github.io"
@@ -42,6 +42,7 @@ def page_html(salary, prev_salary, next_salary):
     return f"""<!doctype html>
 <html lang="ko">
 <head>
+{GA_SNIPPET}
 <meta charset="utf-8">
 <title>{title}</title>
 <meta name="description" content="{desc}">
@@ -158,7 +159,9 @@ def main():
         f'<li><a href="{slug(s)}.html">연봉 {s//10_000:,}만원 실수령액</a></li>' for s in salaries
     )
     index_html = f"""<!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><title>{SITE_NAME} - 연봉별 실수령액 계산 결과</title>
+<html lang="ko"><head>
+{GA_SNIPPET}
+<meta charset="utf-8"><title>{SITE_NAME} - 연봉별 실수령액 계산 결과</title>
 <meta name="google-site-verification" content="22jd1Q9gwpfGcwd0MvSlxlhC8mekAJ9CjNMXHGUHASE" />
 <meta name="naver-site-verification" content="2619bf9b6ab4ed06c679f8f24d5b50df019827ac" /></head>
 <body>

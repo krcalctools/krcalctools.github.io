@@ -159,7 +159,8 @@ def main():
     )
     index_html = f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><title>{SITE_NAME} - 연봉별 실수령액 계산 결과</title>
-<meta name="google-site-verification" content="22jd1Q9gwpfGcwd0MvSlxlhC8mekAJ9CjNMXHGUHASE" /></head>
+<meta name="google-site-verification" content="22jd1Q9gwpfGcwd0MvSlxlhC8mekAJ9CjNMXHGUHASE" />
+<meta name="naver-site-verification" content="2619bf9b6ab4ed06c679f8f24d5b50df019827ac" /></head>
 <body>
 <h1>연봉별 실수령액 계산 결과 ({len(salaries)}개)</h1>
 <p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기 바로가기</b></a></p>

@@ -350,7 +350,7 @@ def main():
   </div>
 </div>
 
-<p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기</b></a> | <a href="severance.html"><b>퇴직금 계산기</b></a> | <a href="unemployment.html"><b>실업급여 계산기</b></a> | <a href="dividend.html"><b>배당금 계산기</b></a></p>
+<p><a href="severance.html"><b>퇴직금 계산기</b></a> | <a href="unemployment.html"><b>실업급여 계산기</b></a> | <a href="dividend.html"><b>배당금 계산기</b></a></p>
 <h2>연봉 구간별 상세 계산 결과 ({len(salaries)}개)</h2>
 <ul>{links}</ul>
 {FOOTER_NAV}

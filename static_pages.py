@@ -22,7 +22,6 @@ GA_SNIPPET = f"""<!-- Google tag (gtag.js) -->
 FOOTER_NAV = """
   <div class="footer-nav">
     <a href="index.html">연봉 실수령액</a>
-    <a href="bonus-index.html">성과급 계산기</a>
     <a href="severance.html">퇴직금 계산기</a>
     <a href="unemployment.html">실업급여 계산기</a>
     <a href="dividend.html">배당금 계산기</a>
@@ -39,7 +38,6 @@ SITE_HEADER = """
     <a href="index.html" class="brand">🧮 머니계산기</a>
     <nav class="site-nav">
       <a href="index.html">연봉</a>
-      <a href="bonus-index.html">성과급</a>
       <a href="severance.html">퇴직금</a>
       <a href="unemployment.html">실업급여</a>
       <a href="dividend.html">배당금</a>

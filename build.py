@@ -1,14 +1,15 @@
 """
-전체 사이트 빌드: 연봉 실수령액 계산기 + 성과급 계산기 + sitemap.xml
+전체 사이트 빌드: 연봉 실수령액 계산기 + sitemap.xml
 사이트에 계산기를 새로 추가할 때마다 이 파일에 generate 모듈을 import해서 main()을 호출하면 됨.
+
+주의: 삼성전자/SK하이닉스 성과급 계산기는 데이터 정확도 문제로 2026-08-22 제거함
+(generate_bonus.py, generate_special_bonus.py, bonus_data.py 삭제됨).
 """
 import os
 import generate
-import generate_bonus
 import generate_severance
 import generate_unemployment
 import generate_dividend
-import generate_special_bonus
 from static_pages import ADSENSE_CLIENT
 
 OUTPUT_DIR = generate.OUTPUT_DIR
@@ -41,11 +42,9 @@ def build_sitemap():
 
 def main():
     generate.main()
-    generate_bonus.main()
     generate_severance.main()
     generate_unemployment.main()
     generate_dividend.main()
-    generate_special_bonus.main()
     build_ads_txt()
     build_sitemap()
 

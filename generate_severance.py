@@ -10,6 +10,29 @@ from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEA
 
 OUTPUT_DIR = "docs"
 
+YEAR_START = 1970
+YEAR_END = 2030
+
+
+def year_options():
+    return "\n".join(f'<option value="{y}">{y}년</option>' for y in range(YEAR_END, YEAR_START - 1, -1))
+
+
+def month_options():
+    return "\n".join(f'<option value="{m}">{m}월</option>' for m in range(1, 13))
+
+
+def day_options():
+    return "\n".join(f'<option value="{d}">{d}일</option>' for d in range(1, 32))
+
+
+def date_select_row(prefix):
+    return f"""<div class="date-select-row">
+      <select id="{prefix}Year" onchange="calc()"><option value="">연도</option>{year_options()}</select>
+      <select id="{prefix}Month" onchange="calc()"><option value="">월</option>{month_options()}</select>
+      <select id="{prefix}Day" onchange="calc()"><option value="">일</option>{day_options()}</select>
+    </div>"""
+
 
 def severance_html():
     title = "퇴직금 계산기 - 입사일·퇴사일로 즉시 계산"
@@ -33,12 +56,12 @@ def severance_html():
 
   <div class="calc-box">
     <div class="field">
-      <label for="startDate">입사일</label>
-      <input type="date" id="startDate" oninput="calc()">
+      <label>입사일</label>
+      {date_select_row("start")}
     </div>
     <div class="field">
-      <label for="endDate">퇴사일 (예정일도 가능)</label>
-      <input type="date" id="endDate" oninput="calc()">
+      <label>퇴사일 (예정일도 가능)</label>
+      {date_select_row("end")}
     </div>
     <div class="field">
       <label for="monthly">퇴직 전 3개월 평균 월급여 (세전, 만원)</label>
@@ -76,14 +99,20 @@ def severance_html():
   </div>
   {FOOTER_NAV}
   <script>
-  function calc() {{
-    const startVal = document.getElementById('startDate').value;
-    const endVal = document.getElementById('endDate').value;
-    const monthly = parseFloat(document.getElementById('monthly').value) || 0;
-    if (!startVal || !endVal) return;
+  function readDateSelect(prefix) {{
+    const y = document.getElementById(prefix + 'Year').value;
+    const m = document.getElementById(prefix + 'Month').value;
+    const d = document.getElementById(prefix + 'Day').value;
+    if (!y || !m || !d) return null;
+    return new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+  }}
 
-    const start = new Date(startVal);
-    const end = new Date(endVal);
+  function calc() {{
+    const start = readDateSelect('start');
+    const end = readDateSelect('end');
+    const monthly = parseFloat(document.getElementById('monthly').value) || 0;
+    if (!start || !end) return;
+
     const days = Math.round((end - start) / (1000 * 60 * 60 * 24));
     if (days <= 0) return;
 

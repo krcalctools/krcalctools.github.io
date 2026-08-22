@@ -85,6 +85,8 @@ SITE_STYLE = """
   .field input:focus, .field select:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
   .field.checkbox { display: flex; align-items: center; gap: 8px; }
   .field.checkbox label { margin-bottom: 0; }
+  .date-select-row { display: flex; gap: 6px; }
+  .date-select-row select { flex: 1; min-width: 0; }
 
   .result { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--border); }
   .result-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 14px; }

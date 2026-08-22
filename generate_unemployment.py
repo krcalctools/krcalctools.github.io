@@ -6,6 +6,7 @@
 """
 import os
 from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEADER, FAVICON
+from generate_severance import date_select_row
 
 OUTPUT_DIR = "docs"
 
@@ -39,12 +40,12 @@ def unemployment_html():
       <input type="number" id="monthly" placeholder="예: 300" oninput="calc()">
     </div>
     <div class="field">
-      <label for="startDate">고용보험 가입일(입사일)</label>
-      <input type="date" id="startDate" oninput="calc()">
+      <label>고용보험 가입일(입사일)</label>
+      {date_select_row("start")}
     </div>
     <div class="field">
-      <label for="endDate">이직일(퇴사일)</label>
-      <input type="date" id="endDate" oninput="calc()">
+      <label>이직일(퇴사일)</label>
+      {date_select_row("end")}
     </div>
     <div class="field checkbox">
       <input type="checkbox" id="senior" oninput="calc()">
@@ -98,15 +99,21 @@ def unemployment_html():
     return senior ? 270 : 240;
   }}
 
+  function readDateSelect(prefix) {{
+    const y = document.getElementById(prefix + 'Year').value;
+    const m = document.getElementById(prefix + 'Month').value;
+    const d = document.getElementById(prefix + 'Day').value;
+    if (!y || !m || !d) return null;
+    return new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+  }}
+
   function calc() {{
     const monthly = parseFloat(document.getElementById('monthly').value) || 0;
-    const startVal = document.getElementById('startDate').value;
-    const endVal = document.getElementById('endDate').value;
+    const start = readDateSelect('start');
+    const end = readDateSelect('end');
     const senior = document.getElementById('senior').checked;
-    if (!startVal || !endVal || monthly <= 0) return;
+    if (!start || !end || monthly <= 0) return;
 
-    const start = new Date(startVal);
-    const end = new Date(endVal);
     const days = Math.round((end - start) / (1000 * 60 * 60 * 24));
     if (days <= 0) return;
 

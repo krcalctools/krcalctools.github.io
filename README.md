@@ -4,6 +4,8 @@
 - `calc.py` — 4대보험/소득세 계산 로직 (요율은 2025년 예시값, 매년 갱신 필요)
 - `static_pages.py` — about/privacy/contact 페이지 (SITE_NAME, CONTACT_EMAIL 여기서 수정)
 - `generate.py` — 연봉 구간별 실수령액 페이지(프리셋) + 실시간 입력 계산기가 있는 index.html 생성
+- `income_percentile.py` — 연봉 순위(상위 몇 %) 추정 테이블. 국세청이 매년 12월 말 새 백분위 자료를
+  공개하므로 그때 앵커 포인트(50/30/10/1%)를 갱신하고 나머지 구간을 재보간할 것
 - `bonus_data.py` / `generate_bonus.py` — 삼성전자/SK하이닉스 성과급(OPI·TAI, PS·PI) 계산기 (뉴스 기반, 반기/연 단위로 갱신 필요)
 - `generate_severance.py` — 퇴직금 계산기 (입사일·퇴사일 기반)
 - `generate_unemployment.py` — 실업급여(구직급여) 계산기 (2026년 상한액 68,100원/하한액 66,048원 기준, 매년 갱신 필요)

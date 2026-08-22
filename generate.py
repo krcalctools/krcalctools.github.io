@@ -6,8 +6,12 @@ STEP/START/END 만 조절하면 페이지 수가 그대로 늘어난다.
 검색엔진이 각각을 별도 URL로 색인한다.
 """
 import os
+import json
 from calc import calculate
+from income_percentile import estimate_top_percent, PERCENTILE_TABLE, SOURCE_NOTE as PERCENTILE_SOURCE_NOTE
 from static_pages import about_html, privacy_html, contact_html, SITE_NAME, GA_SNIPPET, FOOTER_NAV, SITE_STYLE, SITE_HEADER, FAVICON
+
+PERCENTILE_TABLE_JS = f"const PERCENTILE_TABLE = {json.dumps(PERCENTILE_TABLE)};\n"
 
 OUTPUT_DIR = "docs"  # GitHub Pages가 /docs 폴더를 바로 서빙할 수 있어서 이 이름 사용
 BASE_URL = "https://krcalctools.github.io"
@@ -87,6 +91,25 @@ function calc() {
   document.getElementById('employment').textContent = r.employment.toLocaleString() + '원';
   document.getElementById('tax').textContent = (r.incomeTax + r.localTax).toLocaleString() + '원';
   document.getElementById('net').textContent = r.netMonthly.toLocaleString() + '원';
+
+  const topPct = estimateTopPercent(manInput);
+  document.getElementById('percentile').textContent = '상위 ' + topPct + '%';
+  document.getElementById('percentileBadge').style.display = 'block';
+}
+
+function estimateTopPercent(annualMan) {
+  const table = PERCENTILE_TABLE;
+  if (annualMan >= table[0][1]) return table[0][0];
+  if (annualMan <= table[table.length - 1][1]) return table[table.length - 1][0];
+  for (let i = 0; i < table.length - 1; i++) {
+    const [pHi, vHi] = table[i];
+    const [pLo, vLo] = table[i + 1];
+    if (annualMan >= vLo && annualMan <= vHi) {
+      const ratio = (annualMan - vLo) / (vHi - vLo);
+      return Math.round((pLo - ratio * (pLo - pHi)) * 10) / 10;
+    }
+  }
+  return 90.0;
 }
 """
 
@@ -103,8 +126,9 @@ def slug(salary):
 def page_html(salary, prev_salary, next_salary):
     r = calculate(salary)
     man = salary // 10_000
+    top_pct = estimate_top_percent(man)
     title = f"연봉 {fmt(man)}만원 실수령액 - 월 {fmt(r['net_monthly'])}원 (2025년 기준)"
-    desc = f"연봉 {fmt(man)}만원의 세후 실수령액은 월 약 {fmt(r['net_monthly'])}원입니다. 4대보험, 소득세 공제 내역을 확인하세요."
+    desc = f"연봉 {fmt(man)}만원의 세후 실수령액은 월 약 {fmt(r['net_monthly'])}원입니다. 4대보험, 소득세 공제 내역과 소득 순위를 확인하세요."
 
     nav_links = []
     if prev_salary:
@@ -131,6 +155,11 @@ def page_html(salary, prev_salary, next_salary):
     <div>세전 연봉 {fmt(man)}만원의 월 실수령액</div>
     <div class="amount">{fmt(r['net_monthly'])}원</div>
     <div>연 실수령액 약 {fmt(r['net_annual'])}원</div>
+  </div>
+
+  <div class="percentile-badge">
+    💡 연봉 {fmt(man)}만원은 대한민국 근로소득자 중 <b>상위 {top_pct}%</b>에 해당하는 것으로 추정됩니다.
+    <span class="percentile-source">({PERCENTILE_SOURCE_NOTE})</span>
   </div>
 
   <table>
@@ -245,6 +274,10 @@ def main():
     <div class="result-row"><span>소득세+지방소득세</span><span id="tax">-</span></div>
     <div class="result-row total"><span>월 실수령액</span><span id="net">-</span></div>
   </div>
+  <div class="percentile-badge" id="percentileBadge" style="display:none">
+    💡 이 연봉은 대한민국 근로소득자 중 <b><span id="percentile">-</span></b>에 해당하는 것으로 추정됩니다.
+    <span class="percentile-source">({PERCENTILE_SOURCE_NOTE})</span>
+  </div>
 </div>
 
 <p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기</b></a> | <a href="severance.html"><b>퇴직금 계산기</b></a> | <a href="unemployment.html"><b>실업급여 계산기</b></a> | <a href="dividend.html"><b>배당금 계산기</b></a></p>
@@ -252,6 +285,7 @@ def main():
 <ul>{links}</ul>
 {FOOTER_NAV}
 <script>
+{PERCENTILE_TABLE_JS}
 {SALARY_CALC_JS}
 </script>
 </body></html>"""

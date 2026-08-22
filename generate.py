@@ -167,7 +167,7 @@ def main():
 </style></head>
 <body>
 <h1>연봉별 실수령액 계산 결과 ({len(salaries)}개)</h1>
-<p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기</b></a> | <a href="severance.html"><b>퇴직금 계산기</b></a></p>
+<p><a href="bonus-index.html"><b>삼성전자·SK하이닉스 성과급 계산기</b></a> | <a href="severance.html"><b>퇴직금 계산기</b></a> | <a href="unemployment.html"><b>실업급여 계산기</b></a></p>
 <ul>{links}</ul>
 {FOOTER_NAV}
 </body></html>"""

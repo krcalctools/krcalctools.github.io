@@ -1,0 +1,160 @@
+"""
+실업급여(구직급여) 계산기 페이지 생성 (고용보험법 기준, 인터랙티브 계산기)
+
+1일 구직급여액 = 이직 전 평균임금 × 60% (상한 68,100원 / 하한 66,048원, 2026년 기준)
+총 수급액 = 1일 구직급여액 × 소정급여일수(가입기간·연령별, 고용보험법 별표1)
+"""
+import os
+from static_pages import SITE_NAME, GA_SNIPPET, FOOTER_NAV
+
+OUTPUT_DIR = "docs"
+
+DAILY_CAP = 68100    # 2026년 상한액
+DAILY_FLOOR = 66048  # 2026년 하한액 (최저임금 10,320원의 80% × 8시간)
+
+STYLE = """
+  body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.6; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 16px; margin-top: 26px; }
+  .calc-box { background: #f7f7fb; border-radius: 12px; padding: 20px; margin: 20px 0; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; color: #555; margin-bottom: 4px; }
+  .field input[type=number], .field input[type=date] { width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px; }
+  .field.checkbox { display: flex; align-items: center; gap: 8px; }
+  .field.checkbox label { margin-bottom: 0; }
+  .result { margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e2ea; }
+  .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
+  .result-row.total { font-weight: 700; font-size: 17px; color: #1958c9; border-top: 1px dashed #ccc; margin-top: 6px; padding-top: 10px; }
+  .source { font-size: 12px; color: #888; margin-top: 4px; }
+  .source a { color: #888; }
+  .disclaimer { margin-top: 30px; font-size: 12px; color: #999; line-height: 1.6; }
+  table.rule { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  table.rule th, table.rule td { border: 1px solid #eee; padding: 6px 8px; text-align: center; }
+"""
+
+
+def unemployment_html():
+    title = "실업급여 계산기 - 구직급여 예상 수급액 2026"
+    desc = "이직 전 3개월 급여, 가입기간, 연령을 입력하면 2026년 기준 구직급여 1일 지급액과 총 수급액을 계산해드립니다."
+
+    return f"""<!doctype html>
+<html lang="ko">
+<head>
+{GA_SNIPPET}
+<meta charset="utf-8">
+<title>{title}</title>
+<meta name="description" content="{desc}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>{STYLE}</style>
+</head>
+<body>
+  <h1>실업급여(구직급여) 계산기</h1>
+  <p>이직 전 3개월 평균 급여, 고용보험 가입기간, 연령을 입력하면 2026년 기준 예상 구직급여를 계산합니다.</p>
+
+  <div class="calc-box">
+    <div class="field">
+      <label for="monthly">이직 전 3개월 평균 월급여 (세전, 만원)</label>
+      <input type="number" id="monthly" placeholder="예: 300" oninput="calc()">
+    </div>
+    <div class="field">
+      <label for="startDate">고용보험 가입일(입사일)</label>
+      <input type="date" id="startDate" oninput="calc()">
+    </div>
+    <div class="field">
+      <label for="endDate">이직일(퇴사일)</label>
+      <input type="date" id="endDate" oninput="calc()">
+    </div>
+    <div class="field checkbox">
+      <input type="checkbox" id="senior" oninput="calc()">
+      <label for="senior">만 50세 이상 또는 장애인</label>
+    </div>
+
+    <div class="result">
+      <div class="result-row"><span>가입기간</span><span id="period">-</span></div>
+      <div class="result-row"><span>소정급여일수</span><span id="days">-</span></div>
+      <div class="result-row"><span>1일 구직급여액 (상한 {DAILY_CAP:,}원/하한 {DAILY_FLOOR:,}원 적용)</span><span id="daily">-</span></div>
+      <div class="result-row total"><span>예상 총 수급액</span><span id="total">-</span></div>
+    </div>
+  </div>
+
+  <h2>소정급여일수 (고용보험법 별표1)</h2>
+  <table class="rule">
+    <tr><th>가입기간</th><th>50세 미만</th><th>50세 이상·장애인</th></tr>
+    <tr><td>1년 미만</td><td>120일</td><td>120일</td></tr>
+    <tr><td>1~3년</td><td>150일</td><td>180일</td></tr>
+    <tr><td>3~5년</td><td>180일</td><td>210일</td></tr>
+    <tr><td>5~10년</td><td>210일</td><td>240일</td></tr>
+    <tr><td>10년 이상</td><td>240일</td><td>270일</td></tr>
+  </table>
+
+  <h2>계산 기준</h2>
+  <p>1일 구직급여액 = 이직 전 평균임금 × 60% (상한 {DAILY_CAP:,}원, 하한 {DAILY_FLOOR:,}원)<br>
+  총 수급액 = 1일 구직급여액 × 소정급여일수</p>
+  <p class="source">2026년 상한액·하한액 출처:
+  <a href="https://v.daum.net/v/y9hcyWxpgW?f=p" target="_blank" rel="noopener nofollow">2026년 실업급여 상한액 인상 보도</a>
+  (하한액은 2026년 최저임금 10,320원의 80%×8시간 기준)</p>
+
+  <h2>수급 자격 요건 (계산기와 별개로 꼭 확인)</h2>
+  <p>이 계산기는 금액만 추정합니다. 실제 수급을 위해서는 ① 이직일 이전 18개월간 피보험 단위기간
+  180일 이상, ② 비자발적 이직(권고사직·계약만료·해고 등, 일부 정당한 자발적 이직 사유 포함) 요건을
+  함께 충족해야 합니다. 단순 자발적 퇴사는 원칙적으로 수급 대상이 아닙니다.</p>
+
+  <div class="disclaimer">
+    ※ 세전 기준 추정치이며, 평균임금은 실제 근무일수 대신 3개월÷90일로 단순화했습니다. 정확한 금액과
+    수급 자격은 고용노동부 고용보험 홈페이지 또는 관할 고용센터에서 확인하세요.
+  </div>
+  {FOOTER_NAV}
+  <script>
+  const DAILY_CAP = {DAILY_CAP};
+  const DAILY_FLOOR = {DAILY_FLOOR};
+
+  function benefitDays(years, senior) {{
+    if (years < 1) return 120;
+    if (years < 3) return senior ? 180 : 150;
+    if (years < 5) return senior ? 210 : 180;
+    if (years < 10) return senior ? 240 : 210;
+    return senior ? 270 : 240;
+  }}
+
+  function calc() {{
+    const monthly = parseFloat(document.getElementById('monthly').value) || 0;
+    const startVal = document.getElementById('startDate').value;
+    const endVal = document.getElementById('endDate').value;
+    const senior = document.getElementById('senior').checked;
+    if (!startVal || !endVal || monthly <= 0) return;
+
+    const start = new Date(startVal);
+    const end = new Date(endVal);
+    const days = Math.round((end - start) / (1000 * 60 * 60 * 24));
+    if (days <= 0) return;
+
+    const years = days / 365;
+    document.getElementById('period').textContent = years.toFixed(1) + '년 (총 ' + days.toLocaleString() + '일)';
+
+    const benefitDayCount = benefitDays(years, senior);
+    document.getElementById('days').textContent = benefitDayCount + '일';
+
+    const avgDailyWage = monthly * 3 / 90 * 10000;
+    let dailyBenefit = Math.round(avgDailyWage * 0.6);
+    if (dailyBenefit > DAILY_CAP) dailyBenefit = DAILY_CAP;
+    if (dailyBenefit < DAILY_FLOOR) dailyBenefit = DAILY_FLOOR;
+
+    const total = dailyBenefit * benefitDayCount;
+
+    document.getElementById('daily').textContent = dailyBenefit.toLocaleString() + '원';
+    document.getElementById('total').textContent = total.toLocaleString() + '원';
+  }}
+  </script>
+</body>
+</html>"""
+
+
+def main():
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    with open(os.path.join(OUTPUT_DIR, "unemployment.html"), "w", encoding="utf-8") as f:
+        f.write(unemployment_html())
+    print("실업급여 계산기 페이지 생성 완료 -> docs/unemployment.html")
+
+
+if __name__ == "__main__":
+    main()

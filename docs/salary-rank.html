@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HKGC6LX6C4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HKGC6LX6C4');
+</script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5607384951754093"
+     crossorigin="anonymous"></script>
+<meta charset="utf-8">
+<title>연봉 상위 몇 %? 내 연봉 티어 테스트 (2024년 국세청 자료)</title>
+<meta name="description" content="연봉을 입력하면 대한민국 직장인 중 상위 몇 %인지, 100명 중 몇 등인지 바로 알려드려요. 성별·나이대 안에서의 순위와 업종 티어까지. 국세청 근로자 2,108만 명 원자료 기준.">
+<link rel="canonical" href="https://krcalctools.github.io/salary-rank.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="연봉실수령액계산기">
+<meta property="og:title" content="연봉 상위 몇 %? 내 연봉 티어 테스트 (2024년 국세청 자료)">
+<meta property="og:description" content="연봉을 입력하면 대한민국 직장인 중 상위 몇 %인지, 100명 중 몇 등인지 바로 알려드려요. 성별·나이대 안에서의 순위와 업종 티어까지. 국세청 근로자 2,108만 명 원자료 기준.">
+<meta property="og:url" content="https://krcalctools.github.io/salary-rank.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "연봉 티어 테스트", "url": "https://krcalctools.github.io/salary-rank.html", "description": "연봉을 입력하면 대한민국 직장인 중 상위 몇 %인지, 100명 중 몇 등인지 바로 알려드려요. 성별·나이대 안에서의 순위와 업종 티어까지. 국세청 근로자 2,108만 명 원자료 기준.", "applicationCategory": "FinanceApplication", "operatingSystem": "All", "inLanguage": "ko", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "연봉 상위 10%는 얼마부터인가요?", "acceptedAnswer": {"@type": "Answer", "text": "국세청 2024년 귀속 자료로 추정하면 연봉(총급여) 약 8,942만원부터 상위 10%입니다."}}, {"@type": "Question", "name": "우리나라 직장인 중위 연봉은 얼마인가요?", "acceptedAnswer": {"@type": "Answer", "text": "근로소득자를 연봉 순으로 줄 세웠을 때 한가운데(상위 50%)는 약 3,387만원입니다. 평균은 고소득자에게 끌려 올라가서 중위값보다 높습니다."}}, {"@type": "Question", "name": "사이트마다 '상위 몇 %' 결과가 다른 이유는요?", "acceptedAnswer": {"@type": "Answer", "text": "국세청은 구간별 합계만 공개하고 커트라인은 공개하지 않아서, 경계를 추정하는 방법에 따라 결과가 달라집니다. 이 페이지는 이웃한 두 구간 평균의 기하평균을 경계로 씁니다. 또 '근로자 전체'인지 '1년 내내 일한 사람만'인지에 따라서도 달라집니다."}}, {"@type": "Question", "name": "성별·나이대 비교는 왜 월급 기준인가요?", "acceptedAnswer": {"@type": "Answer", "text": "성별·나이대별 소득 분포는 국가데이터처 '임금근로일자리 소득' 통계에만 있고, 이 통계가 월 평균 보수 기준이기 때문입니다. 그래서 입력한 연봉을 12로 나눈 월급으로 비교합니다. 시간제 일자리까지 포함한 통계라 전체 순위보다 조금 후하게 나올 수 있습니다."}}, {"@type": "Question", "name": "입력한 연봉이 어디로 전송되나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 모든 계산은 브라우저 안에서만 이뤄지고, 공유 버튼을 누를 때만 결과가 링크 주소에 담깁니다."}}]}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%A7%AE%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    /* Dark is the default theme for these sites. Every colour below is a token: rules must not
+       hardcode hex values, or the next theme change has to hunt through the stylesheet again. */
+    --primary: #60a5fa; --primary-dark: #93c5fd; --on-primary: #0b1220;
+    --bg: #0f1218; --card-bg: #171b23; --input-bg: #10141b;
+    --text: #e6e8ec; --body-dim: #c4cad4; --muted: #99a2b1; --border: #2b323e;
+    --subtle-bg: #151a22; --nav-hover-bg: #1f2632; --accent-soft: #1a2030;
+    --hero-grad-a: #182032; --hero-grad-b: #1f1c30;
+    --warn-bg: #2a1d10; --warn-border: #7c5312; --warn-text: #fbbf24; --warn-strong: #fcd34d;
+    --good-bg: #0f2419; --good-border: #166534; --good-text: #4ade80;
+    --track-bg: #222935;
+  }
+  html { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+    max-width: 680px; margin: 0 auto; padding: 0 20px 60px; color: var(--text);
+    line-height: 1.7; background: var(--bg);
+  }
+  a { color: var(--primary); }
+  .site-header {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    gap: 10px; padding: 18px 0; border-bottom: 1px solid var(--border); margin-bottom: 28px;
+  }
+  .site-header .brand { font-weight: 800; font-size: 17px; color: var(--text); text-decoration: none; }
+  .site-nav { display: flex; gap: 2px; flex-wrap: wrap; }
+  .site-nav a { font-size: 13px; color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 999px; }
+  .site-nav a:hover { background: var(--nav-hover-bg); color: var(--primary); }
+
+  h1 { font-size: 23px; margin-bottom: 8px; }
+  h2 { font-size: 16px; margin-top: 28px; }
+
+  .calc-box {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.45);
+  }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
+  .field input, .field select {
+    width: 100%; box-sizing: border-box; padding: 11px 13px; font-size: 16px;
+    border: 1px solid var(--border); border-radius: 10px; background: var(--input-bg); color: var(--text);
+  }
+  .field input:focus, .field select:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+  .field.checkbox { display: flex; align-items: center; gap: 8px; }
+  .field.checkbox label { margin-bottom: 0; }
+  .date-select-row { display: flex; gap: 6px; }
+  .date-select-row select { flex: 1; min-width: 0; }
+
+  .result { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--border); }
+  .result-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 14px; }
+  .result-row.total {
+    font-weight: 800; font-size: 19px; color: var(--primary);
+    border-top: 1px solid var(--border); margin-top: 8px; padding-top: 12px;
+  }
+
+  .headline {
+    background: linear-gradient(135deg,var(--hero-grad-a),var(--hero-grad-b)); border-radius: 16px;
+    padding: 26px; text-align: center; margin: 20px 0;
+  }
+  .headline .amount { font-size: 34px; font-weight: 800; color: var(--primary); }
+
+  .percentile-badge {
+    margin: 16px 0; padding: 14px 16px; background: var(--warn-bg); border: 1px solid var(--warn-border);
+    border-radius: 10px; font-size: 14px; color: var(--warn-text);
+  }
+  .percentile-badge b { color: var(--warn-strong); }
+  .percentile-source { display: block; margin-top: 4px; font-size: 11px; color: var(--warn-text); }
+
+  .donut-wrap { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; margin: 20px 0; }
+  .donut-chart {
+    width: 140px; height: 140px; border-radius: 50%; flex-shrink: 0;
+    background: conic-gradient(var(--primary) calc(var(--pct) * 1%), #e5e7eb 0);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .donut-center {
+    width: 100px; height: 100px; border-radius: 50%; background: var(--card-bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .donut-pct { font-size: 22px; font-weight: 800; color: var(--primary); }
+  .donut-label { font-size: 11px; color: var(--muted); }
+  .donut-legend { font-size: 13px; }
+  .donut-legend div { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+  .donut-legend .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .donut-legend .dot.net { background: var(--primary); }
+  .donut-legend .dot.deduction { background: var(--track-bg); }
+
+  .cross-link-box {
+    margin: 20px 0; padding: 16px; background: var(--good-bg); border: 1px solid var(--good-border);
+    border-radius: 10px; font-size: 14px;
+  }
+  .cross-link-box a { font-weight: 600; }
+
+  table.rule, table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+  table.rule th, table.rule td, table th, table td { border: 1px solid var(--border); padding: 9px 10px; text-align: left; }
+  table.rule td.num, table td.num { text-align: right; }
+  th { color: var(--muted); font-weight: 600; background: var(--subtle-bg); }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table.compact { font-size: 12px; }
+  table.compact th, table.compact td { padding: 7px 6px; }
+  table.compact td { white-space: nowrap; }
+  @media (max-width: 400px) { .site-nav a { padding: 6px 7px; } }
+
+  .pending { color: var(--warn-text); font-size: 12px; }
+  .warning { margin-top: 12px; padding: 10px 12px; background: var(--warn-bg); border-radius: 10px; font-size: 13px; color: var(--warn-text); display: none; }
+  .stock-note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  .source { font-size: 12px; color: var(--muted); }
+  .source a { color: var(--muted); }
+  .disclaimer {
+    margin-top: 32px; padding: 14px 16px; background: var(--subtle-bg); border-radius: 10px;
+    font-size: 12px; color: var(--muted); line-height: 1.6;
+  }
+
+  .explain { margin-top: 26px; font-size: 14px; color: var(--body-dim); }
+  .explain h2 { font-size: 15px; }
+  .steps { margin: 12px 0 0; padding-left: 20px; }
+  .steps li { margin-bottom: 8px; }
+  .steps .num { color: var(--primary); font-weight: 700; }
+
+  .nav { margin-top: 24px; font-size: 14px; }
+  .nav a { text-decoration: none; }
+
+  .division-list { list-style: none; padding: 0; margin: 18px 0; display: grid; gap: 8px; }
+  .division-list li a {
+    display: block; padding: 12px 16px; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 10px; text-decoration: none; color: var(--text); font-size: 14px;
+  }
+  .division-list li a:hover { border-color: var(--primary); color: var(--primary); }
+
+  .footer-nav {
+    margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 14px;
+  }
+  .footer-nav a { color: var(--muted); text-decoration: none; }
+  .footer-nav a:hover { color: var(--primary); }
+
+  :root {
+    --rank-grad-a: #1d2b53; --rank-grad-b: #3b1d5a; --rank-grad-c: #0f3d3e;
+    --chip-bg: #1b212c; --chip-on: #60a5fa; --chip-on-text: #0b1220;
+    --dot-off: #2a313d; --dot-on: #fbbf24; --dot-me: #f472b6;
+    --t-legend: #fbbf24; --t-diamond: #67e8f9; --t-platinum: #5eead4; --t-gold: #facc15;
+    --t-silver: #cbd5e1; --t-bronze: #d97706; --t-sprout: #4ade80;
+    --tier-s: #f472b6; --tier-a: #fb923c; --tier-b: #facc15; --tier-c: #4ade80; --tier-d: #60a5fa;
+    --bar: #334155; --bar-me: #f472b6; --up: #4ade80; --down: #f87171;
+  }
+  .rank-hero {
+    border-radius: 20px; padding: 26px 22px; margin: 10px 0 18px; text-align: center;
+    background: linear-gradient(135deg, var(--rank-grad-a), var(--rank-grad-b) 55%, var(--rank-grad-c));
+  }
+  .rank-hero h1 { margin: 0 0 6px; font-size: 25px; line-height: 1.35; }
+  .rank-hero p { margin: 0; color: var(--body-dim); font-size: 14px; }
+  .step-label { font-size: 13px; color: var(--muted); font-weight: 600; margin: 16px 0 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    border: 1px solid var(--border); background: var(--chip-bg); color: var(--text); border-radius: 999px;
+    padding: 9px 15px; font-size: 14px; cursor: pointer; transition: transform .12s, background .12s;
+  }
+  .chip:hover { transform: translateY(-1px); border-color: var(--primary); }
+  .chip.on { background: var(--chip-on); color: var(--chip-on-text); border-color: var(--chip-on); font-weight: 700; }
+  .salary-input { display: flex; align-items: center; gap: 8px; }
+  .salary-input input {
+    flex: 1; font-size: 26px; font-weight: 800; padding: 12px 14px; border-radius: 14px;
+    border: 1px solid var(--border); background: var(--input-bg); color: var(--text); min-width: 0;
+  }
+  .salary-input span { font-size: 18px; color: var(--muted); font-weight: 700; }
+  .salary-hint { font-size: 12px; color: var(--muted); margin-top: 6px; min-height: 18px; }
+  .go-btn {
+    width: 100%; margin-top: 20px; padding: 16px; border: 0; border-radius: 14px; cursor: pointer;
+    font-size: 17px; font-weight: 800; color: var(--chip-on-text);
+    background: linear-gradient(90deg, var(--t-gold), var(--dot-me));
+  }
+  .go-btn:active { transform: scale(.98); }
+  #result { display: none; }
+  .reveal { animation: pop .5s ease-out; }
+  @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+  .result-card {
+    border-radius: 22px; padding: 26px 20px; text-align: center; margin: 18px 0;
+    background: radial-gradient(circle at 50% 0%, var(--rank-grad-b), var(--card-bg) 70%);
+    border: 1px solid var(--border);
+  }
+  .tier-emoji { font-size: 64px; line-height: 1; filter: drop-shadow(0 0 18px var(--tier-glow, transparent)); }
+  .tier-name { font-size: 22px; font-weight: 900; margin-top: 6px; color: var(--tier-color, var(--text)); }
+  .big-pct { font-size: 52px; font-weight: 900; letter-spacing: -1px; margin: 4px 0; }
+  .big-pct small { font-size: 22px; font-weight: 700; color: var(--muted); }
+  .tier-caption { color: var(--body-dim); font-size: 14px; }
+  .rank-line { margin-top: 12px; font-size: 15px; }
+  .rank-line b { color: var(--dot-on); }
+  .dots { display: grid; grid-template-columns: repeat(20, 1fr); gap: 4px; max-width: 360px; margin: 16px auto 4px; }
+  .dots i { aspect-ratio: 1; border-radius: 50%; background: var(--dot-off); transition: background .25s; }
+  .dots i.above { background: var(--dot-on); }
+  .dots i.me { background: var(--dot-me); box-shadow: 0 0 0 3px rgba(244,114,182,.35); }
+  .dots-legend { font-size: 12px; color: var(--muted); }
+  .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+  .cmp {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 14px; text-align: left;
+  }
+  .cmp .k { font-size: 12px; color: var(--muted); }
+  .cmp .v { font-size: 22px; font-weight: 800; margin-top: 2px; }
+  .cmp .s { font-size: 12px; color: var(--body-dim); margin-top: 2px; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  @media (max-width: 420px) { .cmp-grid { grid-template-columns: 1fr; } .big-pct { font-size: 44px; } }
+  .histo { width: 100%; height: auto; margin-top: 6px; }
+  .histo rect.b { fill: var(--bar); } .histo rect.me { fill: var(--bar-me); }
+  .histo text { fill: var(--muted); font-size: 10px; }
+  .histo .me-label { fill: var(--bar-me); font-size: 11px; font-weight: 700; }
+  .share-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .share-row button {
+    flex: 1; min-width: 120px; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--chip-bg); color: var(--text); font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .share-row button.primary { background: var(--chip-on); color: var(--chip-on-text); border-color: var(--chip-on); }
+  .toast { font-size: 13px; color: var(--good-text); min-height: 20px; margin-top: 6px; text-align: center; }
+  .tier-row { display: flex; gap: 10px; align-items: stretch; margin: 8px 0; }
+  .tier-label {
+    width: 44px; flex-shrink: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 20px; color: var(--chip-on-text);
+  }
+  .t-S { background: var(--tier-s); } .t-A { background: var(--tier-a); } .t-B { background: var(--tier-b); }
+  .t-C { background: var(--tier-c); } .t-D { background: var(--tier-d); }
+  .tier-items { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+  .ind-chip {
+    background: var(--chip-bg); border: 1px solid var(--border); border-radius: 10px; padding: 6px 10px; font-size: 13px;
+  }
+  .ind-chip small { margin-left: 6px; color: var(--muted); }
+  .ind-chip.mine { border-color: var(--dot-me); box-shadow: 0 0 0 2px rgba(244,114,182,.35); }
+  .faq details { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin: 8px 0; }
+  .faq summary { cursor: pointer; font-weight: 700; font-size: 14px; }
+  .faq p { margin: 8px 0 0; font-size: 14px; color: var(--body-dim); }
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="brand">🧮 머니계산기</a>
+    <nav class="site-nav">
+      <a href="index.html">연봉</a>
+      <a href="salary-rank.html">연봉티어🏆</a>
+      <a href="salary-table.html">실수령액표</a>
+      <a href="severance.html">퇴직금</a>
+      <a href="unemployment.html">실업급여</a>
+      <a href="dividend.html">배당금</a>
+    </nav>
+  </header>
+
+  <div class="rank-hero">
+    <h1>내 연봉, 대한민국 상위 몇 %? 🏆</h1>
+    <p>연봉만 넣으면 끝. 직장인 2,108만 명 중 내 자리를 찾아드려요</p>
+  </div>
+
+  <div class="calc-box">
+    <div class="step-label">① 세전 연봉 (만원)</div>
+    <div class="salary-input">
+      <input id="salary" inputmode="numeric" autocomplete="off" placeholder="예: 4,500" aria-label="세전 연봉(만원)">
+      <span>만원</span>
+    </div>
+    <div class="salary-hint" id="salary-hint"></div>
+    <div class="chips" style="margin-top:6px">
+      <button type="button" class="chip" onclick="setSalary(3000)">3천</button>
+      <button type="button" class="chip" onclick="setSalary(4000)">4천</button>
+      <button type="button" class="chip" onclick="setSalary(5000)">5천</button>
+      <button type="button" class="chip" onclick="setSalary(7000)">7천</button>
+      <button type="button" class="chip" onclick="setSalary(10000)">1억</button>
+    </div>
+
+    <div class="step-label">② 성별 <span class="source">(선택)</span></div>
+    <div class="chips">
+      <button type="button" class="chip" data-group="g" data-val="male">🙋‍♂️ 남성</button>
+      <button type="button" class="chip" data-group="g" data-val="female">🙋‍♀️ 여성</button>
+    </div>
+
+    <div class="step-label">③ 나이대 <span class="source">(선택)</span></div>
+    <div class="chips"><button type="button" class="chip" data-group="a" data-val="age19">19세 이하</button><button type="button" class="chip" data-group="a" data-val="age20">20대</button><button type="button" class="chip" data-group="a" data-val="age30">30대</button><button type="button" class="chip" data-group="a" data-val="age40">40대</button><button type="button" class="chip" data-group="a" data-val="age50">50대</button><button type="button" class="chip" data-group="a" data-val="age60">60대</button><button type="button" class="chip" data-group="a" data-val="age70">70세 이상</button></div>
+
+    <div class="step-label">④ 업종 <span class="source">(선택)</span></div>
+    <div class="field" style="margin:0">
+      <select id="industry"><option value="">선택 안 함</option><option value="K">금융·보험업</option><option value="D">전기·가스·증기 공급업</option><option value="U">국제·외국기관</option><option value="B">광업</option><option value="J">정보통신업(IT·통신·방송)</option><option value="C">제조업</option><option value="M">전문·과학·기술 서비스업</option><option value="O">공공행정·국방</option><option value="P">교육 서비스업</option><option value="E">수도·하수·폐기물 처리업</option><option value="H">운수·창고업</option><option value="G">도매·소매업</option><option value="F">건설업</option><option value="L">부동산업</option><option value="R">예술·스포츠·여가 서비스업</option><option value="Q">보건·사회복지 서비스업</option><option value="N">사업시설관리·사업지원 서비스업</option><option value="A">농업·임업·어업</option><option value="S">협회·단체·기타 개인 서비스업</option><option value="I">숙박·음식점업</option></select>
+    </div>
+
+    <button type="button" class="go-btn" onclick="run(true)">내 티어 확인하기 →</button>
+  </div>
+
+  <div id="result">
+    <div class="result-card" id="card">
+      <div class="tier-emoji" id="tier-emoji"></div>
+      <div class="tier-name" id="tier-name"></div>
+      <div class="big-pct"><small>상위</small> <span id="pct">100</span><small>%</small></div>
+      <div class="tier-caption" id="tier-caption"></div>
+      <div class="rank-line" id="rank-line"></div>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+      <div class="dots-legend">🟡 나보다 연봉이 높은 사람 · 🩷 나</div>
+    </div>
+
+    <div class="cmp-grid" id="cmp"></div>
+
+    <h2>월급 구간별 직장인 분포</h2>
+    <div id="histo"></div>
+    <p class="source">세로 막대 = 각 월 소득 구간(만원)에 속한 근로자 비중. 국가데이터처 2024년 12월 기준.</p>
+
+    <div class="share-row">
+      <button type="button" class="primary" onclick="saveImage()">📸 결과 이미지 저장</button>
+      <button type="button" onclick="nativeShare()">📤 공유하기</button>
+      <button type="button" onclick="copyLink()">🔗 링크 복사</button>
+    </div>
+    <div class="toast" id="toast"></div>
+
+    <div class="cross-link-box">
+      💸 이 연봉의 실제 월급은? <a href="index.html">연봉 실수령액 계산기</a>로 세금·4대보험 뺀 금액을 확인해 보세요.
+    </div>
+  </div>
+
+  <h2>업종 티어표 🏢</h2>
+  <p class="source">업종별 평균 월급(국가데이터처 2024년 12월 기준) 기준. S 650만↑ · A 480만↑ · B 400만↑ · C 300만↑ · D 그 아래. 업종을 고르면 내 업종이 표시돼요.</p>
+  <div class="tier-row"><div class="tier-label t-S">S</div><div class="tier-items"><span class="ind-chip" data-ind="K">금융·보험업<small>777만</small></span><span class="ind-chip" data-ind="D">전기·가스·증기 공급업<small>699만</small></span></div></div>
+<div class="tier-row"><div class="tier-label t-A">A</div><div class="tier-items"><span class="ind-chip" data-ind="U">국제·외국기관<small>538만</small></span><span class="ind-chip" data-ind="B">광업<small>524만</small></span><span class="ind-chip" data-ind="J">정보통신업(IT·통신·방송)<small>517만</small></span><span class="ind-chip" data-ind="C">제조업<small>488만</small></span></div></div>
+<div class="tier-row"><div class="tier-label t-B">B</div><div class="tier-items"><span class="ind-chip" data-ind="M">전문·과학·기술 서비스업<small>447만</small></span><span class="ind-chip" data-ind="O">공공행정·국방<small>430만</small></span><span class="ind-chip" data-ind="P">교육 서비스업<small>418만</small></span><span class="ind-chip" data-ind="E">수도·하수·폐기물 처리업<small>411만</small></span></div></div>
+<div class="tier-row"><div class="tier-label t-C">C</div><div class="tier-items"><span class="ind-chip" data-ind="H">운수·창고업<small>355만</small></span><span class="ind-chip" data-ind="G">도매·소매업<small>328만</small></span><span class="ind-chip" data-ind="F">건설업<small>324만</small></span></div></div>
+<div class="tier-row"><div class="tier-label t-D">D</div><div class="tier-items"><span class="ind-chip" data-ind="L">부동산업<small>299만</small></span><span class="ind-chip" data-ind="R">예술·스포츠·여가 서비스업<small>295만</small></span><span class="ind-chip" data-ind="Q">보건·사회복지 서비스업<small>276만</small></span><span class="ind-chip" data-ind="N">사업시설관리·사업지원 서비스업<small>252만</small></span><span class="ind-chip" data-ind="A">농업·임업·어업<small>244만</small></span><span class="ind-chip" data-ind="S">협회·단체·기타 개인 서비스업<small>229만</small></span><span class="ind-chip" data-ind="I">숙박·음식점업<small>188만</small></span></div></div>
+
+  <div class="explain">
+    <h2>연봉 상위 % 커트라인 (2024년 귀속)</h2>
+    <p>국세청 근로소득 백분위 원자료로 추정한 구간 경계입니다. 예: 연봉 3,000만원 = 상위 56.7% · 연봉 4,000만원 = 상위 40.8% · 연봉 5,000만원 = 상위 30.0% · 연봉 7,000만원 = 상위 17.2% · 연봉 10,000만원 = 상위 7.4%.</p>
+    <div class="table-wrap"><table>
+      <tr><th>구간</th><th>연봉(총급여)</th><th>월 환산</th></tr>
+      <tr><td>상위 1%</td><td class="num">18,596만원</td><td class="num">1,550만원</td></tr>
+<tr><td>상위 3%</td><td class="num">13,894만원</td><td class="num">1,158만원</td></tr>
+<tr><td>상위 5%</td><td class="num">11,553만원</td><td class="num">963만원</td></tr>
+<tr><td>상위 10%</td><td class="num">8,942만원</td><td class="num">745만원</td></tr>
+<tr><td>상위 20%</td><td class="num">6,442만원</td><td class="num">537만원</td></tr>
+<tr><td>상위 30%</td><td class="num">5,005만원</td><td class="num">417만원</td></tr>
+<tr><td>상위 40%</td><td class="num">4,060만원</td><td class="num">338만원</td></tr>
+<tr><td>상위 50%</td><td class="num">3,387만원</td><td class="num">282만원</td></tr>
+<tr><td>상위 60%</td><td class="num">2,825만원</td><td class="num">235만원</td></tr>
+<tr><td>상위 70%</td><td class="num">2,347만원</td><td class="num">196만원</td></tr>
+<tr><td>상위 80%</td><td class="num">1,541만원</td><td class="num">128만원</td></tr>
+<tr><td>상위 90%</td><td class="num">729만원</td><td class="num">61만원</td></tr>
+    </table></div>
+
+    <h2>티어 기준</h2>
+    <table>
+      <tr><th>티어</th><th>범위</th><th>연봉</th></tr>
+      <tr><td>👑 레전드</td><td>상위 1% 이내</td><td class="num">약 18,596만원 이상</td></tr>
+<tr><td>💎 다이아</td><td>상위 1~5%</td><td class="num">약 11,553만원 이상</td></tr>
+<tr><td>💠 플래티넘</td><td>상위 5~15%</td><td class="num">약 7,501만원 이상</td></tr>
+<tr><td>🥇 골드</td><td>상위 15~30%</td><td class="num">약 5,005만원 이상</td></tr>
+<tr><td>🥈 실버</td><td>상위 30~50%</td><td class="num">약 3,387만원 이상</td></tr>
+<tr><td>🥉 브론즈</td><td>상위 50~75%</td><td class="num">약 1,965만원 이상</td></tr>
+<tr><td>🌱 새싹</td><td>상위 75~100%</td><td class="num">-</td></tr>
+    </table>
+
+    <h2>성별·나이대별 평균 월급</h2>
+    <div class="table-wrap"><table>
+      <tr><th>나이대</th><th>남성</th><th>여성</th><th>전체</th></tr>
+      <tr><td>19세 이하</td><td class="num">103만원</td><td class="num">88만원</td><td class="num">95만원</td></tr>
+<tr><td>20대</td><td class="num">286만원</td><td class="num">255만원</td><td class="num">271만원</td></tr>
+<tr><td>30대</td><td class="num">428만원</td><td class="num">354만원</td><td class="num">397만원</td></tr>
+<tr><td>40대</td><td class="num">544만원</td><td class="num">363만원</td><td class="num">469만원</td></tr>
+<tr><td>50대</td><td class="num">548만원</td><td class="num">306만원</td><td class="num">445만원</td></tr>
+<tr><td>60대</td><td class="num">362만원</td><td class="num">200만원</td><td class="num">293만원</td></tr>
+<tr><td>70세 이상</td><td class="num">234만원</td><td class="num">95만원</td><td class="num">165만원</td></tr>
+    </table></div>
+    <p>전체 평균 월급은 375만원, 중위값은 288만원입니다. 평균은 고소득자 쪽으로 끌려가서 중위값보다 높아요.</p>
+
+    <h2>어떻게 계산하나요?</h2>
+    <ol class="steps">
+      <li><b>전체 순위·티어</b>: 국세청이 공개한 2024년 귀속 근로소득 백분위(천분위) 자료의 구간별 인원·총급여 합계로 각 구간 평균을 구하고, 이웃 구간 평균의 기하평균을 경계로 잡아 보간합니다.</li>
+      <li><b>성별·나이대 순위</b>: 국가데이터처 「임금근로일자리 소득(보수)」의 월 소득 구간 분포를 쓰고, 구간 안에서는 고르게 분포한다고 보고 보간합니다. 입력한 연봉 ÷ 12로 비교합니다.</li>
+      <li><b>같은 성별·나이대 평균</b>: 이 조합은 분포가 공개되지 않아 순위 대신 평균과의 차이만 보여줍니다.</li>
+    </ol>
+  </div>
+
+  <div class="faq">
+    <h2>자주 묻는 질문</h2>
+    <details><summary>연봉 상위 10%는 얼마부터인가요?</summary><p>국세청 2024년 귀속 자료로 추정하면 연봉(총급여) 약 8,942만원부터 상위 10%입니다.</p></details>
+<details><summary>우리나라 직장인 중위 연봉은 얼마인가요?</summary><p>근로소득자를 연봉 순으로 줄 세웠을 때 한가운데(상위 50%)는 약 3,387만원입니다. 평균은 고소득자에게 끌려 올라가서 중위값보다 높습니다.</p></details>
+<details><summary>사이트마다 '상위 몇 %' 결과가 다른 이유는요?</summary><p>국세청은 구간별 합계만 공개하고 커트라인은 공개하지 않아서, 경계를 추정하는 방법에 따라 결과가 달라집니다. 이 페이지는 이웃한 두 구간 평균의 기하평균을 경계로 씁니다. 또 '근로자 전체'인지 '1년 내내 일한 사람만'인지에 따라서도 달라집니다.</p></details>
+<details><summary>성별·나이대 비교는 왜 월급 기준인가요?</summary><p>성별·나이대별 소득 분포는 국가데이터처 '임금근로일자리 소득' 통계에만 있고, 이 통계가 월 평균 보수 기준이기 때문입니다. 그래서 입력한 연봉을 12로 나눈 월급으로 비교합니다. 시간제 일자리까지 포함한 통계라 전체 순위보다 조금 후하게 나올 수 있습니다.</p></details>
+<details><summary>입력한 연봉이 어디로 전송되나요?</summary><p>아니요. 모든 계산은 브라우저 안에서만 이뤄지고, 공유 버튼을 누를 때만 결과가 링크 주소에 담깁니다.</p></details>
+  </div>
+
+  <div class="disclaimer">
+    출처: <a href="https://www.data.go.kr/data/15082063/fileData.do" target="_blank" rel="noopener">국세청 근로소득 백분위(천분위) 자료</a>(국세청 2024년 귀속 근로소득 백분위(천분위) 원자료, 근로자 21,078,535명 기준 추정),
+    <a href="https://www.korea.kr/briefing/pressReleaseView.do?newsId=156745446" target="_blank" rel="noopener">국가데이터처 2024년 임금근로일자리 소득(보수) 결과</a>.
+    티어 이름과 업종 티어는 재미를 위한 구분입니다. 결과는 통계 기반 추정치이며 입력값은 서버로 전송되지 않습니다.
+  </div>
+
+  <div class="footer-nav">
+    <a href="index.html">연봉 실수령액</a>
+    <a href="salary-table.html">연봉 실수령액표</a>
+    <a href="salary-rank.html">연봉 티어 테스트</a>
+    <a href="severance.html">퇴직금 계산기</a>
+    <a href="unemployment.html">실업급여 계산기</a>
+    <a href="dividend.html">배당금 계산기</a>
+    <a href="about.html">사이트 소개</a>
+    <a href="privacy.html">개인정보처리방침</a>
+  </div>
+
+<script>const D = {"nts": [[0.1, 66235], [0.2, 39170], [0.3, 32468], [0.4, 28566], [0.5, 25875], [0.6, 23902], [0.7, 22415], [0.8, 21252], [0.9, 20349], [1.0, 18596], [2, 15971], [3, 13894], [4, 12538], [5, 11553], [6, 10791], [7, 10187], [8, 9709], [9, 9305], [10, 8942], [11, 8610], [12, 8306], [13, 8023], [14, 7756], [15, 7501], [16, 7262], [17, 7039], [18, 6829], [19, 6630], [20, 6442], [21, 6265], [22, 6100], [23, 5947], [24, 5800], [25, 5654], [26, 5514], [27, 5380], [28, 5249], [29, 5124], [30, 5005], [31, 4892], [32, 4787], [33, 4686], [34, 4586], [35, 4490], [36, 4396], [37, 4307], [38, 4222], [39, 4141], [40, 4060], [41, 3983], [42, 3908], [43, 3834], [44, 3763], [45, 3694], [46, 3630], [47, 3572], [48, 3511], [49, 3448], [50, 3387], [51, 3328], [52, 3268], [53, 3209], [54, 3150], [55, 3092], [56, 3036], [57, 2986], [58, 2934], [59, 2879], [60, 2825], [61, 2773], [62, 2723], [63, 2671], [64, 2621], [65, 2570], [66, 2525], [67, 2491], [68, 2452], [69, 2407], [70, 2347], [71, 2277], [72, 2205], [73, 2128], [74, 2049], [75, 1965], [76, 1880], [77, 1800], [78, 1717], [79, 1627], [80, 1541], [81, 1455], [82, 1365], [83, 1277], [84, 1202], [85, 1123], [86, 1035], [87, 953], [88, 870], [89, 797], [90, 729], [91, 654], [92, 574], [93, 494], [94, 418], [95, 342], [96, 266], [97, 195], [98, 123], [99, 44]], "year": 2024, "totalMan": 2108, "bands": [0, 85, 150, 250, 350, 450, 550, 650, 800, 1000], "dist": {"all": [12.2, 8.4, 20.9, 20.1, 11.7, 7.8, 5.3, 5.6, 3.7, 4.3], "male": [10.4, 6.5, 15.5, 18.7, 13.6, 9.8, 6.8, 7.3, 5.1, 6.5], "female": [14.5, 11.0, 27.9, 21.9, 9.3, 5.2, 3.4, 3.3, 1.8, 1.6], "age19": [61.2, 17.2, 14.0, 5.7, 1.2, 0.4, 0.2, 0.1, 0.0, 0.0], "age20": [13.0, 7.1, 25.8, 31.4, 13.0, 4.7, 2.3, 1.8, 0.6, 0.2], "age30": [5.5, 4.3, 15.6, 25.2, 19.5, 12.2, 6.4, 5.2, 3.4, 2.6], "age40": [6.9, 6.2, 16.8, 16.2, 12.1, 10.9, 9.5, 8.9, 5.5, 7.0], "age50": [9.6, 8.9, 21.0, 17.1, 9.1, 6.8, 5.4, 8.2, 6.0, 7.8], "age60": [16.2, 15.4, 29.5, 17.4, 6.9, 4.3, 2.6, 2.7, 2.2, 2.8], "age70": [48.6, 14.5, 22.7, 7.2, 2.1, 1.3, 0.7, 0.8, 0.6, 1.5]}, "mean": {"all": 375, "male": 442, "female": 289, "age19": 95, "age20": 271, "age30": 397, "age40": 469, "age50": 445, "age60": 293, "age70": 165}, "sexAge": {"male": {"age19": 103, "age20": 286, "age30": 428, "age40": 544, "age50": 548, "age60": 362, "age70": 234}, "female": {"age19": 88, "age20": 255, "age30": 354, "age40": 363, "age50": 306, "age60": 200, "age70": 95}}, "ageLabels": {"age19": "19세 이하", "age20": "20대", "age30": "30대", "age40": "40대", "age50": "50대", "age60": "60대", "age70": "70세 이상"}, "industries": [["K", "금융·보험업", 777, 649, "S"], ["D", "전기·가스·증기 공급업", 699, 661, "S"], ["U", "국제·외국기관", 538, 472, "A"], ["B", "광업", 524, 437, "A"], ["J", "정보통신업(IT·통신·방송)", 517, 409, "A"], ["C", "제조업", 488, 375, "A"], ["M", "전문·과학·기술 서비스업", 447, 330, "B"], ["O", "공공행정·국방", 430, 401, "B"], ["P", "교육 서비스업", 418, 355, "B"], ["E", "수도·하수·폐기물 처리업", 411, 374, "B"], ["H", "운수·창고업", 355, 303, "C"], ["G", "도매·소매업", 328, 255, "C"], ["F", "건설업", 324, 220, "C"], ["L", "부동산업", 299, 250, "D"], ["R", "예술·스포츠·여가 서비스업", 295, 250, "D"], ["Q", "보건·사회복지 서비스업", 276, 222, "D"], ["N", "사업시설관리·사업지원 서비스업", 252, 235, "D"], ["A", "농업·임업·어업", 244, 219, "D"], ["S", "협회·단체·기타 개인 서비스업", 229, 204, "D"], ["I", "숙박·음식점업", 188, 175, "D"]], "tiers": [[1, "legend", "👑", "레전드", "대한민국 직장인 꼭대기. 연말정산이 무서운 구간"], [5, "diamond", "💎", "다이아", "100명이 모이면 맨 앞줄에 앉는 사람"], [15, "platinum", "💠", "플래티넘", "어디 가서 연봉 얘기 먼저 꺼내도 되는 구간"], [30, "gold", "🥇", "골드", "평균은 가볍게 넘긴 탄탄한 상위권"], [50, "silver", "🥈", "실버", "중간보다 위. 여기서부터가 진짜 경쟁"], [75, "bronze", "🥉", "브론즈", "직장인 절반 가까이가 여기서 출발해요"], [100, "sprout", "🌱", "새싹", "시작이 반! 성장 그래프는 지금부터"]]};
+const $ = (id) => document.getElementById(id);
+const state = { s: null, g: null, a: null, i: '' };
+const AGE_KEYS = Object.keys(D.ageLabels);
+
+function topPercent(man) {
+  const t = D.nts;
+  if (man >= t[0][1]) return t[0][0];
+  if (man <= t[t.length - 1][1]) return t[t.length - 1][0];
+  for (let k = 0; k < t.length - 1; k++) {
+    const [pHi, vHi] = t[k], [pLo, vLo] = t[k + 1];
+    if (vLo <= man && man <= vHi) return Math.round((pLo - (man - vLo) / (vHi - vLo) * (pLo - pHi)) * 10) / 10;
+  }
+  return t[t.length - 1][0];
+}
+function topInGroup(monthly, key) {
+  const dist = D.dist[key], b = D.bands;
+  if (monthly >= b[b.length - 1]) return { pct: dist[dist.length - 1], capped: true };
+  let below = 0;
+  for (let k = 0; k < dist.length - 1; k++) {
+    if (monthly < b[k + 1]) { below += dist[k] * (monthly - b[k]) / (b[k + 1] - b[k]); break; }
+    below += dist[k];
+  }
+  return { pct: Math.round((100 - below) * 10) / 10, capped: false };
+}
+function tierOf(p) { return D.tiers.find(t => p <= t[0]); }
+function fmtMan(m) {
+  m = Math.round(m);
+  if (m >= 10000) { const e = Math.floor(m / 10000), r = m % 10000; return e + '억' + (r ? ' ' + r.toLocaleString() + '만' : '') + '원'; }
+  return m.toLocaleString() + '만원';
+}
+function pctText(p) { return p < 0.1 ? '0.1' : (p >= 10 ? Math.round(p) : p.toFixed(1)); }
+
+function pick(group, val, el) {
+  state[group] = (state[group] === val) ? null : val;
+  document.querySelectorAll('[data-group="' + group + '"]').forEach(c => c.classList.toggle('on', c.dataset.val === state[group]));
+}
+function setSalary(v) { $('salary').value = Number(v).toLocaleString(); onSalary(); }
+function onSalary() {
+  const raw = $('salary').value.replace(/[^0-9]/g, '');
+  let v = Number(raw);
+  // 원 단위로 입력한 경우(예: 45000000) 만원으로 보정
+  if (v > 1000000) v = Math.round(v / 10000);
+  state.s = v || null;
+  $('salary-hint').textContent = v ? '= ' + fmtMan(v) + ' · 월 약 ' + Math.round(v / 12).toLocaleString() + '만원' : '';
+}
+
+function animateNumber(el, to, ms) {
+  const start = performance.now(), from = 100;
+  function step(now) {
+    const k = Math.min(1, (now - start) / ms), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = pctText(from + (to - from) * e);
+    if (k < 1) requestAnimationFrame(step); else el.textContent = pctText(to);
+  }
+  requestAnimationFrame(step);
+}
+
+function histogram(monthly) {
+  const dist = D.dist.all, b = D.bands, W = 340, H = 150, n = dist.length, bw = W / n, max = Math.max(...dist);
+  let meIdx = b.findIndex((x, k) => monthly >= x && (k === n - 1 || monthly < b[k + 1]));
+  let svg = '<svg class="histo" viewBox="0 0 ' + W + ' ' + (H + 34) + '" role="img" aria-label="월 소득 구간별 근로자 분포">';
+  dist.forEach((v, k) => {
+    const h = v / max * (H - 18), x = k * bw + 3, y = H - h;
+    svg += '<rect class="' + (k === meIdx ? 'me' : 'b') + '" x="' + x + '" y="' + y + '" width="' + (bw - 6) + '" height="' + h + '" rx="4"></rect>';
+    svg += '<text x="' + (x + (bw - 6) / 2) + '" y="' + (y - 4) + '" text-anchor="middle">' + v + '%</text>';
+    const lab = k === n - 1 ? '1000+' : b[k] + '~';
+    svg += '<text x="' + (x + (bw - 6) / 2) + '" y="' + (H + 14) + '" text-anchor="middle">' + lab + '</text>';
+    if (k === meIdx) svg += '<text class="me-label" x="' + (x + (bw - 6) / 2) + '" y="' + (H + 30) + '" text-anchor="middle">▲ 나</text>';
+  });
+  return svg + '</svg>';
+}
+
+function cmpCard(k, v, s, cls) {
+  return '<div class="cmp"><div class="k">' + k + '</div><div class="v ' + (cls || '') + '">' + v + '</div><div class="s">' + s + '</div></div>';
+}
+
+function run(scroll) {
+  onSalary();
+  if (!state.s) { $('salary').focus(); $('salary-hint').textContent = '연봉을 먼저 입력해 주세요 🙏'; return; }
+  const s = state.s, monthly = s / 12, p = topPercent(s), t = tierOf(p);
+  const res = $('result');
+  res.style.display = 'block'; res.classList.remove('reveal'); void res.offsetWidth; res.classList.add('reveal');
+
+  const card = $('card');
+  card.style.setProperty('--tier-color', 'var(--t-' + t[1] + ')');
+  card.style.setProperty('--tier-glow', 'var(--t-' + t[1] + ')');
+  $('tier-emoji').textContent = t[2];
+  $('tier-name').textContent = t[3] + ' 티어';
+  $('tier-caption').textContent = t[4];
+  animateNumber($('pct'), p, 900);
+
+  const rank = Math.max(1, Math.ceil(p));
+  $('rank-line').innerHTML = '대한민국 직장인 100명 중 <b>' + rank + '등</b> · 전체 ' + D.totalMan.toLocaleString() + '만 명 중 약 <b>' + Math.max(1, Math.round(D.totalMan * p / 100)).toLocaleString() + '만 등</b>';
+  const dots = $('dots'); dots.innerHTML = '';
+  for (let k = 1; k <= 100; k++) {
+    const d = document.createElement('i');
+    if (k < rank) d.className = 'above'; else if (k === rank) d.className = 'me';
+    dots.appendChild(d);
+  }
+
+  let cards = '';
+  if (state.g) {
+    const r = topInGroup(monthly, state.g), label = state.g === 'male' ? '남성' : '여성';
+    cards += cmpCard(label + ' 직장인 중', (r.capped ? '상위 ' + r.pct + '% 이내' : '상위 ' + pctText(r.pct) + '%'), '월 ' + Math.round(monthly).toLocaleString() + '만원 기준 · 평균 ' + D.mean[state.g] + '만원');
+  }
+  if (state.a) {
+    const r = topInGroup(monthly, state.a);
+    cards += cmpCard(D.ageLabels[state.a] + ' 직장인 중', (r.capped ? '상위 ' + r.pct + '% 이내' : '상위 ' + pctText(r.pct) + '%'), D.ageLabels[state.a] + ' 평균 월 ' + D.mean[state.a] + '만원');
+  }
+  if (state.g && state.a) {
+    const avg = D.sexAge[state.g][state.a], diff = Math.round(monthly - avg);
+    cards += cmpCard('같은 ' + D.ageLabels[state.a] + ' ' + (state.g === 'male' ? '남성' : '여성') + ' 평균보다', (diff >= 0 ? '+' : '') + diff.toLocaleString() + '만원', '평균 월 ' + avg + '만원 vs 나 월 ' + Math.round(monthly).toLocaleString() + '만원', diff >= 0 ? 'up' : 'down');
+  }
+  if (state.i) {
+    const ind = D.industries.find(x => x[0] === state.i), diff = Math.round(monthly - ind[2]);
+    cards += cmpCard(ind[1] + ' (' + ind[4] + '티어 업종)', (diff >= 0 ? '+' : '') + diff.toLocaleString() + '만원', '업종 평균 월 ' + ind[2] + '만원 · 중위 ' + ind[3] + '만원', diff >= 0 ? 'up' : 'down');
+  }
+  if (!cards) cards = cmpCard('더 재밌게 보려면', '성별·나이대 선택', '위에서 고르면 같은 또래·같은 성별 안에서의 순위도 나와요');
+  $('cmp').innerHTML = cards;
+  $('histo').innerHTML = histogram(monthly);
+  document.querySelectorAll('.ind-chip').forEach(c => c.classList.toggle('mine', c.dataset.ind === state.i));
+
+  const q = new URLSearchParams({ s: s });
+  if (state.g) q.set('g', state.g); if (state.a) q.set('a', state.a); if (state.i) q.set('i', state.i);
+  history.replaceState(null, '', '?' + q.toString());
+  if (window.gtag) gtag('event', 'rank_calc', { tier: t[1], top_pct: Math.round(p) });
+  if (scroll) res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function shareUrl() { return location.href.split('#')[0]; }
+function shareText() {
+  const p = topPercent(state.s), t = tierOf(p);
+  return '내 연봉은 대한민국 직장인 상위 ' + pctText(p) + '% ' + t[2] + t[3] + ' 티어! 너는 몇 티어야?';
+}
+function toast(msg) { $('toast').textContent = msg; setTimeout(() => $('toast').textContent = '', 2500); }
+async function copyLink() {
+  try { await navigator.clipboard.writeText(shareText() + ' ' + shareUrl()); toast('링크를 복사했어요. 친구한테 붙여넣기!'); }
+  catch (e) { prompt('아래 링크를 복사하세요', shareUrl()); }
+}
+async function nativeShare() {
+  if (navigator.share) { try { await navigator.share({ title: '연봉 티어 테스트', text: shareText(), url: shareUrl() }); } catch (e) {} }
+  else copyLink();
+}
+function saveImage() {
+  const p = topPercent(state.s), t = tierOf(p), c = document.createElement('canvas'), W = 1080, H = 1350;
+  c.width = W; c.height = H;
+  const x = c.getContext('2d'), css = getComputedStyle(document.documentElement);
+  const v = (n) => css.getPropertyValue(n).trim();
+  const g = x.createLinearGradient(0, 0, W, H);
+  g.addColorStop(0, v('--rank-grad-a')); g.addColorStop(.55, v('--rank-grad-b')); g.addColorStop(1, v('--rank-grad-c'));
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.textAlign = 'center'; x.fillStyle = v('--text');
+  x.font = '700 44px sans-serif'; x.fillText('내 연봉 티어는?', W / 2, 170);
+  x.font = '220px sans-serif'; x.fillText(t[2], W / 2, 470);
+  x.fillStyle = v('--t-' + t[1]); x.font = '900 96px sans-serif'; x.fillText(t[3], W / 2, 620);
+  x.fillStyle = v('--text'); x.font = '900 150px sans-serif'; x.fillText('상위 ' + pctText(p) + '%', W / 2, 820);
+  x.font = '600 46px sans-serif'; x.fillStyle = v('--body-dim');
+  x.fillText('직장인 100명 중 ' + Math.max(1, Math.ceil(p)) + '등', W / 2, 920);
+  x.font = '500 34px sans-serif'; x.fillText(t[4], W / 2, 1000);
+  x.font = '600 32px sans-serif'; x.fillStyle = v('--muted');
+  x.fillText('국세청 ' + D.year + '년 귀속 근로소득 기준', W / 2, 1180);
+  x.fillText('krcalctools.github.io/salary-rank', W / 2, 1230);
+  c.toBlob(async (blob) => {
+    const file = new File([blob], '내-연봉-티어.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], text: shareText() }); return; } catch (e) {}
+    }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; a.click();
+    toast('이미지를 저장했어요 📸');
+  });
+}
+
+document.querySelectorAll('.chip[data-group]').forEach(c => c.addEventListener('click', () => pick(c.dataset.group, c.dataset.val)));
+$('salary').addEventListener('input', onSalary);
+$('salary').addEventListener('keydown', e => { if (e.key === 'Enter') run(true); });
+$('industry').addEventListener('change', e => { state.i = e.target.value; });
+(function restore() {
+  const q = new URLSearchParams(location.search);
+  if (q.get('g')) pick('g', q.get('g'));
+  if (q.get('a') && AGE_KEYS.includes(q.get('a'))) pick('a', q.get('a'));
+  if (q.get('i')) { $('industry').value = q.get('i'); state.i = q.get('i'); }
+  if (q.get('s')) { setSalary(q.get('s')); run(false); }
+})();
+</script>
+</body>
+</html>

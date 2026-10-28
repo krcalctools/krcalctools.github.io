@@ -251,6 +251,7 @@ def page_html(salary, prev_salary, next_salary):
 
   <div class="percentile-badge">
     💡 연봉 {label}은(는) 대한민국 근로소득자 중 <b>상위 {top_pct}%</b>에 해당하는 것으로 추정됩니다.
+    <a href="salary-rank.html?s={man}"><b>🏆 내 연봉 티어 확인하기 →</b></a>
     <span class="percentile-source">({PERCENTILE_SOURCE_NOTE})</span>
   </div>
 
